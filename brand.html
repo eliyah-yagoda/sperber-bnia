@@ -1,0 +1,672 @@
+<title>ספר המותג שפרבר</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="ספר המותג של שפרבר בנייה: לוגו, צבעים, טיפוגרפיה, ערכים ומוקאפים.">
+<style>
+@font-face{font-family:"Days";src:url(fonts/Days-Regular.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Days";src:url(fonts/Days-Bold.woff2) format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"Polin";src:url(fonts/Polin-Regular.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Polin";src:url(fonts/Polin-Bold.woff2) format("woff2");font-weight:700;font-display:swap}
+
+/* Layout: a brand book in alternating ink / paper bands; each band is one chapter, numbered because the book is read in order. Single deliberate look (no theme switch). */
+:root{
+  color-scheme:dark;
+  --pink:#F49CC4; --navy:#12475C; --yellow:#D6CC3A; --orange:#D3833A;
+  --ink:#08202C; --ink-2:#0F2E3D; --paper:#F7F3EC; --paper-2:#ECE5D8; --mute:#7E97A3;
+  --display:"Days","Arial Hebrew",Arial,sans-serif;
+  --body:"Polin","Segoe UI",Arial,sans-serif;
+  --leaf:18px 0; --leaf-sm:10px 0;
+  --wrap:1240px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--paper);font-family:var(--body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.band{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:clamp(64px,10vw,140px)}
+.band.paper{background:var(--paper);color:var(--ink)}
+.band.paper2{background:var(--paper-2);color:var(--ink)}
+.wrap{max-width:var(--wrap);margin-inline:auto}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1;margin:0;text-wrap:balance}
+h2{font-size:clamp(40px,6vw,88px);letter-spacing:-.01em}
+h3{font-size:clamp(22px,2vw,28px)}
+p{margin:0}
+.lead{font-size:clamp(18px,1.6vw,22px);max-width:60ch;opacity:.86}
+.chap{display:flex;align-items:center;gap:14px;font-family:var(--display);font-size:14px;letter-spacing:.16em;margin-bottom:26px}
+.chap i{width:12px;height:12px;border-radius:50%;background:var(--pink);flex:none}
+.chap b{font-weight:400;opacity:.55}
+.head{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,80px);align-items:end;margin-bottom:clamp(40px,6vw,80px)}
+.head > *{min-width:0}
+.bar{display:block;height:10px;width:180px;background:var(--yellow);position:relative;margin-top:24px}
+.bar::before{content:"";position:absolute;right:0;top:0;bottom:0;width:34%;background:var(--orange)}
+.label{font-family:var(--display);font-size:12px;letter-spacing:.14em;opacity:.6}
+.mono{font-variant-numeric:tabular-nums;direction:ltr;unicode-bidi:isolate}
+
+/* ---------- nav ---------- */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(8,32,44,.86);backdrop-filter:blur(12px);border-bottom:1px solid rgba(247,243,236,.08);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:21;background:var(--ink)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;height:64px}
+.nav img{height:40px;width:auto}
+.nav ul{display:flex;gap:clamp(12px,2vw,28px);list-style:none;margin:0;padding:0;overflow-x:auto;scrollbar-width:none}
+.nav a{color:var(--paper);text-decoration:none;font-family:var(--display);font-size:14px;opacity:.7;white-space:nowrap;transition:opacity .2s}
+.nav a:hover,.nav a:focus-visible{opacity:1;outline:none;color:var(--yellow)}
+
+/* ---------- hero ---------- */
+.hero{position:relative;overflow:hidden;padding-block:clamp(56px,9vw,120px) clamp(48px,7vw,96px)}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(24px,5vw,72px);align-items:center}
+.hero .wrap > *{min-width:0}
+.hero h1{font-size:clamp(76px,13vw,200px);letter-spacing:-.02em;line-height:.9}
+.hero h1 span{display:block;font-size:.32em;letter-spacing:.02em;color:var(--yellow);margin-top:.35em;font-weight:400}
+.hero .lead{margin-top:28px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:12px 28px;margin-top:36px}
+.hero-meta div{border-top:1px solid rgba(247,243,236,.2);padding-top:10px;min-width:120px}
+.hero-meta b{display:block;font-family:var(--display);font-size:20px}
+.shapes{width:100%;max-width:560px;justify-self:center;overflow:visible}
+.shapes .c{animation:float 9s ease-in-out infinite;transform-origin:center}
+.shapes .t{animation:float 9s -3s ease-in-out infinite}
+.shapes .b{animation:slide 9s -1.5s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-12px)}}
+@keyframes slide{50%{transform:translateX(-14px)}}
+
+/* ---------- values ---------- */
+.values{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:rgba(8,32,44,.12)}
+.value{background:var(--paper);padding:clamp(24px,3vw,40px);display:flex;flex-direction:column;gap:16px;min-width:0}
+.value svg{width:72px;height:72px}
+.value p{opacity:.78;font-size:16px}
+.value .label{opacity:.5}
+.persona{display:grid;grid-template-columns:repeat(2,1fr);gap:28px 64px;margin-top:clamp(48px,6vw,80px)}
+.slider{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;font-family:var(--display);font-size:15px}
+.slider .track{position:relative;height:2px;background:rgba(8,32,44,.2)}
+.slider .track i{position:absolute;top:50%;width:18px;height:18px;border-radius:50%;background:var(--pink);transform:translate(50%,-50%);box-shadow:0 0 0 4px var(--paper)}
+.voice{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:clamp(48px,6vw,72px)}
+.voice div{border-top:3px solid var(--navy);padding-top:16px}
+.voice div:nth-child(2){border-color:var(--pink)}.voice div:nth-child(3){border-color:var(--yellow)}
+.voice b{font-family:var(--display);font-size:20px;display:block;margin-bottom:6px}
+.voice p{font-size:15.5px;opacity:.78}
+
+/* ---------- logo ---------- */
+.logos{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:auto auto;gap:16px}
+.lg{display:grid;place-items:center;padding:clamp(28px,4vw,56px);min-height:240px;position:relative;min-width:0}
+.lg img{width:min(220px,70%);height:auto}
+.lg.big{grid-row:span 2;min-height:500px}
+.lg.big img{width:min(340px,70%)}
+.lg .label{position:absolute;top:16px;right:18px}
+.on-paper{background:var(--paper);color:var(--ink)}
+.on-ink{background:var(--ink-2)}
+.on-navy{background:var(--navy)}
+.on-yellow{background:var(--yellow);color:var(--ink)}
+.on-photo{background:url(brand/building.webp) center/cover}
+.on-photo::before{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(8,32,44,.75),rgba(8,32,44,.15))}
+.on-photo img,.on-photo .label{position:relative}
+
+.anatomy{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,64px);margin-top:clamp(56px,7vw,96px);align-items:center}
+.anatomy > *{min-width:0}
+.construct{position:relative;background:var(--ink-2);aspect-ratio:1/1;max-width:100%;display:grid;place-items:center;overflow:hidden;
+  background-image:linear-gradient(rgba(247,243,236,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(247,243,236,.05) 1px,transparent 1px);background-size:32px 32px}
+.construct .frame{position:relative;width:62%;direction:ltr}
+.construct .frame img{display:block;width:100%;height:auto}
+.construct .frame::before{content:"";position:absolute;inset:-14%;border:1px dashed rgba(214,204,58,.7)}
+.construct .x{position:absolute;font-family:var(--display);font-size:13px;color:var(--yellow)}
+.construct .x.t{top:-12%;left:50%;transform:translateX(-50%)}
+.construct .x.r{right:-11%;top:50%;transform:translateY(-50%)}
+.construct .xb{position:absolute;background:rgba(214,204,58,.35)}
+.construct .xb.t{left:0;right:0;top:-14%;height:14%}
+.construct .xb.r{top:0;bottom:0;right:-14%;width:14%}
+.parts{display:grid;gap:22px}
+.part{display:grid;grid-template-columns:64px 1fr;gap:20px;align-items:center}
+.part svg{width:64px;height:64px}
+.part b{font-family:var(--display);font-size:20px;display:block}
+.part p{font-size:15.5px;opacity:.75}
+.rules{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:28px}
+.rules div{border:1px solid rgba(247,243,236,.15);padding:16px 18px}
+.rules b{font-family:var(--display);font-size:26px;color:var(--yellow);display:block}
+.rules span{font-size:14px;opacity:.7}
+
+.misuse{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:clamp(56px,7vw,96px)}
+.mis{background:var(--paper);aspect-ratio:1/1;max-width:100%;position:relative;display:grid;place-items:center;overflow:hidden}
+.mis img{width:52%;height:auto}
+.mis::after{content:"";position:absolute;inset:0;background:linear-gradient(to top left,transparent calc(50% - 1.5px),#C8452F calc(50% - 1.5px),#C8452F calc(50% + 1.5px),transparent calc(50% + 1.5px))}
+.mis-cap{display:block;margin-top:10px;font-family:var(--display);font-size:14px;opacity:.8}
+.m1 img{transform:scaleX(1.45)}
+.m2 img{transform:rotate(-14deg)}
+.m3 img{filter:hue-rotate(160deg) saturate(1.4)}
+.m4{background:url(brand/lot.webp) center/cover}
+.m4 img{opacity:.55}
+
+/* ---------- color ---------- */
+.swatches{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.sw{display:flex;flex-direction:column;min-width:0}
+.sw .chip{aspect-ratio:3/4;max-width:100%;padding:20px;display:flex;flex-direction:column;justify-content:space-between}
+.sw .chip h3{font-size:clamp(20px,2vw,26px)}
+.sw .chip .label{opacity:.75}
+.sw dl{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:14px 0 0;font-size:14px}
+.sw dt{font-family:var(--display);opacity:.55}
+.sw dd{margin:0}
+.tints{display:grid;grid-template-columns:repeat(5,1fr);height:22px;margin-top:2px}
+.neutrals{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.neutrals .chip{aspect-ratio:auto;min-height:150px;flex-direction:row;align-items:flex-end}
+.ratio{margin-top:clamp(48px,6vw,72px)}
+.ratio .barline{display:flex;height:64px;margin-top:16px}
+.ratio .barline div{display:flex;align-items:flex-end;padding:8px 10px;font-family:var(--display);font-size:13px;min-width:0;overflow:hidden;white-space:nowrap}
+
+/* ---------- type ---------- */
+.typo{display:grid;grid-template-columns:1.3fr 1fr;gap:16px}
+.spec{background:var(--ink-2);padding:clamp(28px,4vw,56px);min-width:0}
+.spec .big{font-family:var(--display);font-weight:700;font-size:clamp(110px,16vw,240px);line-height:.85;color:var(--yellow)}
+.spec .abc{font-family:var(--display);font-size:clamp(26px,3vw,40px);line-height:1.3;margin-top:24px;word-break:break-all}
+.spec .weights{display:flex;flex-wrap:wrap;gap:24px;margin-top:24px;font-family:var(--display);font-size:22px}
+.spec.body .big{font-family:var(--body);color:var(--pink);font-weight:400}
+.spec.body p{margin-top:24px;opacity:.85}
+.scale{margin-top:16px;background:var(--ink-2);padding:clamp(28px,4vw,56px);display:grid;gap:18px}
+.scale div{display:grid;grid-template-columns:110px 1fr;gap:20px;align-items:baseline;border-bottom:1px solid rgba(247,243,236,.08);padding-bottom:14px;min-width:0}
+.scale div > *{min-width:0}
+
+/* ---------- graphic language ---------- */
+.pattern{display:grid;grid-template-columns:repeat(8,1fr);gap:0;margin-bottom:clamp(40px,5vw,64px)}
+.pattern span{aspect-ratio:1;max-width:100%;position:relative}
+.pattern span::before{content:"";position:absolute;inset:18%}
+.p-c::before{border-radius:50%;background:var(--pink)}
+.p-t::before{background:var(--navy);clip-path:polygon(0 0,100% 50%,0 100%)}
+.p-b::before{inset:38% 0!important;background:var(--yellow)}
+.p-o::before{border-radius:50%;border:2px solid var(--navy)}
+.p-q::before{background:var(--orange);border-radius:0 100% 0 0}
+.lang{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.lang > div{background:var(--paper);padding:28px;display:flex;flex-direction:column;gap:18px;min-width:0}
+.lang p{font-size:15px;opacity:.75}
+.btns{display:flex;flex-wrap:wrap;gap:10px}
+.btn{font-family:var(--display);font-size:15px;padding:12px 22px;border-radius:var(--leaf);border:0;cursor:pointer}
+.btn.y{background:var(--yellow);color:var(--ink)}
+.btn.n{background:var(--navy);color:var(--paper)}
+.btn.o{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.btn:focus-visible{outline:2px solid var(--pink);outline-offset:3px}
+
+/* ---------- mockups ---------- */
+.mocks{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
+.mock{position:relative;overflow:hidden;min-width:0;background:var(--ink-2)}
+.mock figcaption{position:absolute;right:18px;bottom:14px;z-index:5;font-family:var(--display);font-size:13px;letter-spacing:.08em;background:rgba(8,32,44,.7);padding:6px 12px;border-radius:var(--leaf-sm);backdrop-filter:blur(6px)}
+.s6{grid-column:span 6}.s4{grid-column:span 4}.s3{grid-column:span 3}.s2{grid-column:span 2}
+
+/* hoarding */
+.hoard{aspect-ratio:21/9;max-width:100%;background:url(brand/lot.webp) center 30%/cover;perspective:1400px}
+.hoard .fence{position:absolute;left:4%;right:4%;bottom:7%;height:46%;display:grid;grid-template-columns:1.2fr 1fr 1fr;transform:rotateX(4deg);transform-origin:bottom;box-shadow:0 30px 40px -20px rgba(0,0,0,.6)}
+.hoard .fence::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 calc(33.33% - 2px),rgba(0,0,0,.35) calc(33.33% - 2px) 33.33%);pointer-events:none}
+.f1{background:var(--ink);display:flex;flex-direction:column;justify-content:center;padding:4%;gap:6%}
+.f1 img{width:34%;height:auto}
+.f1 b{font-family:var(--display);font-size:clamp(14px,2.2vw,34px);line-height:1.05;color:var(--paper)}
+.f1 b em{font-style:normal;color:var(--yellow)}
+.f2{background:url(brand/building.webp) 62% 40%/cover}
+.f3{background:var(--yellow);position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:4%}
+.f3::before{content:"";position:absolute;width:90%;aspect-ratio:1;border-radius:50%;background:var(--pink);left:-30%;top:-30%;mix-blend-mode:multiply}
+.f3::after{content:"";position:absolute;width:42%;aspect-ratio:1;background:var(--navy);clip-path:polygon(0 0,100% 50%,0 100%);right:12%;top:12%;mix-blend-mode:multiply}
+.f3 span{position:relative;z-index:1;font-family:var(--display);font-size:clamp(11px,1.3vw,18px);color:var(--ink);line-height:1.3}
+
+/* project sign */
+.sign{aspect-ratio:4/3;max-width:100%;background:url(brand/building.webp) 30% 35%/cover}
+.sign .board{position:absolute;left:8%;top:16%;width:52%;background:var(--paper);color:var(--ink);box-shadow:0 24px 40px -14px rgba(0,0,0,.55);transform:rotateY(-14deg);transform-origin:left;display:grid}
+.sign .board::before,.sign .board::after{content:"";position:absolute;bottom:-60%;width:4%;height:60%;background:linear-gradient(90deg,#3d4a50,#7a868b,#3d4a50);z-index:-1}
+.sign .board::before{left:14%}.sign .board::after{right:14%}
+.sign .top{background:var(--ink);padding:6% 7%;display:flex;align-items:center;justify-content:space-between}
+.sign .top img{width:26%;height:auto}
+.sign .top b{font-family:var(--display);color:var(--paper);font-size:clamp(12px,1.6vw,22px)}
+.sign .mid{padding:6% 7%;display:grid;gap:4px}
+.sign .mid b{font-family:var(--display);font-size:clamp(14px,2vw,28px);line-height:1}
+.sign .mid span{font-size:clamp(9px,.9vw,12px);opacity:.7}
+.sign .foot{height:10px;background:var(--yellow);position:relative}
+.sign .foot::before{content:"";position:absolute;right:0;top:0;bottom:0;width:30%;background:var(--orange)}
+
+/* cards */
+.cards{aspect-ratio:4/3;max-width:100%;background:radial-gradient(circle at 30% 30%,#d7cfc0,#b9ae9b)}
+.card{position:absolute;width:52%;aspect-ratio:85/55;box-shadow:0 22px 30px -12px rgba(0,0,0,.45),0 2px 4px rgba(0,0,0,.2)}
+.card.front{background:var(--ink);top:14%;right:10%;transform:rotate(-8deg);display:grid;place-items:center}
+.card.front img{width:32%;height:auto}
+.card.back{background:var(--paper);color:var(--ink);bottom:12%;left:8%;transform:rotate(6deg);padding:6% 7%;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
+.card.back::before{content:"";position:absolute;width:34%;aspect-ratio:1;border-radius:50%;background:var(--pink);left:-10%;bottom:-16%;opacity:.9}
+.card.back::after{content:"";position:absolute;left:0;bottom:0;width:58%;height:9%;background:var(--yellow);mix-blend-mode:multiply}
+.card.back b{font-family:var(--display);font-size:clamp(12px,1.5vw,20px);display:block}
+.card.back span{font-size:clamp(8px,.8vw,11px);opacity:.7;display:block}
+.card.back .ct{font-size:clamp(8px,.8vw,11px);line-height:1.6;text-align:left;direction:ltr;position:relative;z-index:1}
+
+/* stationery */
+.stat{aspect-ratio:4/3;max-width:100%;background:linear-gradient(135deg,#2a4250,#13303d)}
+.a4{position:absolute;width:44%;aspect-ratio:210/297;background:var(--paper);right:12%;top:8%;transform:rotate(4deg);box-shadow:0 26px 40px -16px rgba(0,0,0,.6);padding:6%;display:flex;flex-direction:column;gap:6%;overflow:hidden}
+.a4 img{width:22%;height:auto}
+.a4 i{display:block;height:4px;background:#d9d1c3;border-radius:2px}
+.a4 i.s{width:60%}
+.a4::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3%;background:linear-gradient(90deg,var(--yellow) 66%,var(--orange) 66%)}
+.env{position:absolute;width:52%;aspect-ratio:220/110;background:var(--ink);left:6%;bottom:12%;transform:rotate(-6deg);box-shadow:0 22px 34px -14px rgba(0,0,0,.6);overflow:hidden}
+.env::before{content:"";position:absolute;inset:0 0 40% 0;background:var(--navy);clip-path:polygon(0 0,100% 0,50% 100%)}
+.env img{position:absolute;width:14%;height:auto;right:6%;bottom:12%}
+
+/* hard hat */
+.hat{aspect-ratio:1/1;max-width:100%;background:radial-gradient(circle at 50% 40%,#f1ebdf,#cdc3b1);display:grid;place-items:center}
+.hat svg{width:80%;height:auto;filter:drop-shadow(0 24px 22px rgba(0,0,0,.28))}
+
+/* phone */
+.phone-wrap{aspect-ratio:1/1;max-width:100%;background:var(--pink);display:grid;place-items:center;overflow:hidden}
+.phone-wrap::before{content:"";position:absolute;width:70%;aspect-ratio:1;background:var(--navy);clip-path:polygon(0 0,100% 50%,0 100%);left:-14%;top:-10%;opacity:.9}
+.phone{position:relative;width:44%;aspect-ratio:9/19;border-radius:28px;background:#05141b;padding:3.5%;box-shadow:0 30px 40px -18px rgba(0,0,0,.6);transform:rotate(-6deg)}
+.screen{width:100%;height:100%;border-radius:22px;overflow:hidden;background:url(brand/building.webp) 58% center/cover;position:relative;display:flex;flex-direction:column;justify-content:flex-end;padding:12% 9%}
+.screen::before{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(8,32,44,.95) 10%,rgba(8,32,44,0) 60%)}
+.screen > *{position:relative}
+.screen img{position:absolute;top:6%;right:8%;width:20%;height:auto}
+.screen b{font-family:var(--display);color:var(--paper);font-size:clamp(13px,1.6vw,22px);line-height:1}
+.screen b em{font-style:normal;color:var(--yellow)}
+.screen i{display:block;height:5px;width:40%;background:var(--yellow);margin:9% 0}
+.screen span{font-family:var(--display);font-size:clamp(8px,.8vw,11px);background:var(--yellow);color:var(--ink);padding:6px 10px;border-radius:8px 0;align-self:flex-start}
+
+/* social */
+.social{aspect-ratio:1/1;max-width:100%;background:url(brand/holo.webp) 60% center/cover;display:flex;flex-direction:column;justify-content:space-between;padding:8%}
+.social::before{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(8,32,44,.9),rgba(8,32,44,.1) 60%)}
+.social > *{position:relative}
+.social img{width:20%;height:auto;align-self:flex-start}
+.social b{font-family:var(--display);font-size:clamp(20px,2.6vw,38px);line-height:1;color:var(--paper)}
+.social b em{font-style:normal;color:var(--pink)}
+
+/* icons */
+.icons{aspect-ratio:4/3;max-width:100%;background:var(--paper-2);display:grid;grid-template-columns:repeat(2,minmax(0,26%));justify-content:center;align-content:center;gap:5%}
+.icons span{aspect-ratio:1;border-radius:22%;position:relative;overflow:hidden;box-shadow:0 10px 18px -8px rgba(0,0,0,.35)}
+.i1{background:var(--ink)}.i2{background:var(--pink)}.i3{background:var(--yellow)}.i4{background:var(--paper);box-shadow:inset 0 0 0 1px #ddd5c6,0 10px 18px -8px rgba(0,0,0,.25)!important}
+.icons span::before{content:"";position:absolute}
+.i1::before{inset:22%;border-radius:50%;background:var(--pink)}
+.i2::before{inset:24% 22% 24% 30%;background:var(--navy);clip-path:polygon(0 0,100% 50%,0 100%)}
+.i3::before{left:14%;right:14%;top:42%;height:16%;background:var(--ink)}
+.i4{display:grid;place-items:center}
+.i4 img{width:66%;height:auto}
+
+footer.band{padding-block:56px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between}
+footer img{height:56px;width:auto}
+footer p{opacity:.6;font-size:14px}
+
+/* ---------- responsive ---------- */
+@media (max-width:980px){
+  .values{grid-template-columns:1fr 1fr}
+  .swatches{grid-template-columns:1fr 1fr}
+  .misuse{grid-template-columns:1fr 1fr}
+  .mocks{grid-template-columns:1fr 1fr}
+  .s6,.s4{grid-column:span 2}.s3,.s2{grid-column:span 1}
+}
+@media (max-width:720px){
+  .head,.hero .wrap,.anatomy,.typo,.persona,.voice,.lang{grid-template-columns:1fr}
+  .logos{grid-template-columns:1fr 1fr}
+  .lg.big{grid-column:span 2;grid-row:auto;min-height:320px}
+  .lg{min-height:180px}
+  .shapes{max-width:340px}
+  .nav ul{display:none}
+  .mocks{grid-template-columns:1fr}
+  .s6,.s4,.s3,.s2{grid-column:span 1}
+  .hoard{aspect-ratio:4/3}
+  .hoard .fence{height:58%}
+  .pattern{grid-template-columns:repeat(6,1fr)}
+  .pattern span:nth-child(n+19){display:none}
+  .scale div{grid-template-columns:1fr;gap:4px}
+}
+@media (max-width:440px){
+  .values,.swatches,.misuse{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important}}
+</style>
+
+<div dir="rtl" lang="he">
+
+<nav class="nav" aria-label="פרקים">
+  <div class="wrap">
+    <img src="brand/logo-light.png" alt="שפרבר">
+    <ul>
+      <li><a href="#values">ערכים</a></li>
+      <li><a href="#logo">לוגו</a></li>
+      <li><a href="#color">צבע</a></li>
+      <li><a href="#type">טיפוגרפיה</a></li>
+      <li><a href="#language">שפה גרפית</a></li>
+      <li><a href="#mockups">מוקאפים</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="band hero">
+  <div class="wrap">
+    <div>
+      <div class="chap"><i></i>ספר מותג <b>· מהדורה 01 · 2026</b></div>
+      <h1>שפרבר<span>מהקרקע ועד המפתח</span></h1>
+      <p class="lead">שלוש צורות, ארבעה צבעים ורעיון אחד: בניין טוב מתחיל ביסודות נכונים. הספר הזה מגדיר איך שפרבר בנייה נראית, נשמעת ומרגישה, מהשלט על גדר האתר ועד כרטיס הביקור.</p>
+      <div class="hero-meta">
+        <div><span class="label">תחום</span><b>יזמות וביצוע</b></div>
+        <div><span class="label">פונטים</span><b>Days · Polin</b></div>
+        <div><span class="label">צבעי יסוד</span><b>4 + 2</b></div>
+      </div>
+    </div>
+    <svg class="shapes" viewBox="0 0 774 440" aria-hidden="true">
+      <defs><clipPath id="hc"><circle cx="214" cy="257" r="214"/></clipPath></defs>
+      <circle cx="214" cy="257" r="214" fill="#F49CC4"/>
+      <polygon points="364,0 618,148 364,293" fill="#1C5A73"/>
+      <rect x="166" y="344" width="608" height="86" fill="#D6CC3A"/>
+      <g clip-path="url(#hc)"><polygon points="364,0 618,148 364,293" fill="#2B3A62"/><rect x="166" y="344" width="608" height="86" fill="#D3833A"/></g>
+    </svg>
+  </div>
+</header>
+
+<!-- VALUES -->
+<section class="band paper" id="values">
+  <div class="wrap">
+    <div class="head">
+      <div>
+        <div class="chap"><i></i>פרק 01 <b>· ערכי המותג</b></div>
+        <h2>כל צורה<br>היא הבטחה</h2>
+      </div>
+      <p class="lead">הלוגו בנוי משלוש צורות גאומטריות שחופפות זו לזו. כל אחת מייצגת ערך שמנחה את העבודה שלנו, והמקום שבו הן נפגשות הוא הערך הרביעי.</p>
+    </div>
+
+    <div class="values">
+      <article class="value">
+        <svg viewBox="0 0 72 72"><circle cx="36" cy="36" r="30" fill="#F49CC4"/></svg>
+        <span class="label">העיגול</span>
+        <h3>בית וקהילה</h3>
+        <p>אנחנו לא בונים קירות, אנחנו בונים מקום לחיות בו. כל פרויקט מתוכנן סביב האנשים שיגורו בו ובשכונה שמסביב.</p>
+      </article>
+      <article class="value">
+        <svg viewBox="0 0 72 72"><polygon points="14,6 66,36 14,66" fill="#12475C"/></svg>
+        <span class="label">המשולש</span>
+        <h3>כיוון וחדשנות</h3>
+        <p>תכנון דיגיטלי, הדמיות מלאות ושיטות ביצוע מתקדמות. המשולש מצביע קדימה, וגם אנחנו.</p>
+      </article>
+      <article class="value">
+        <svg viewBox="0 0 72 72"><rect x="4" y="28" width="64" height="16" fill="#D6CC3A"/></svg>
+        <span class="label">הקורה</span>
+        <h3>יסודות ויציבות</h3>
+        <p>הנדסה מדויקת, תקני בטיחות מחמירים ולוחות זמנים שעומדים בהם. בניין שמחזיק לדורות.</p>
+      </article>
+      <article class="value">
+        <svg viewBox="0 0 72 72"><circle cx="30" cy="36" r="24" fill="#F49CC4"/><rect x="22" y="30" width="46" height="14" fill="#D6CC3A" style="mix-blend-mode:multiply"/></svg>
+        <span class="label">החפיפה</span>
+        <h3>שותפות</h3>
+        <p>הכתום נוצר רק כשהצורות נפגשות. יזם, אדריכל, קבלן ודיירים, כולם בצוות אחד ובשקיפות מלאה.</p>
+      </article>
+    </div>
+
+    <div class="persona" aria-label="אישיות המותג">
+      <div class="slider"><span>מסורתי</span><span class="track"><i style="right:76%"></i></span><span>עכשווי</span></div>
+      <div class="slider"><span>שקט</span><span class="track"><i style="right:62%"></i></span><span>נועז</span></div>
+      <div class="slider"><span>טכני</span><span class="track"><i style="right:58%"></i></span><span>אנושי</span></div>
+      <div class="slider"><span>בלעדי</span><span class="track"><i style="right:40%"></i></span><span>נגיש</span></div>
+    </div>
+
+    <div class="voice">
+      <div><b>ישירים</b><p>משפטים קצרים ומספרים אמיתיים. אומרים מה נבנה, מתי ואיך.</p></div>
+      <div><b>חמים</b><p>מדברים אל הדיירים, לא מעליהם. "הבית שלכם", לא "יחידת הדיור".</p></div>
+      <div><b>בטוחים</b><p>בלי סופרלטיבים ריקים. הביטחון בא מהעבודה, לא מהמילים.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGO -->
+<section class="band" id="logo">
+  <div class="wrap">
+    <div class="head">
+      <div>
+        <div class="chap"><i></i>פרק 02 <b>· הלוגו</b></div>
+        <h2>שלוש צורות.<br>סימן אחד.</h2>
+      </div>
+      <p class="lead">הסימן משלב עיגול, משולש וקורה מעל הכיתוב sperber. יש לו שתי גרסאות: כיתוב כחול לרקעים בהירים וכיתוב לבן לרקעים כהים. הצורות עצמן לא משנות צבע לעולם.</p>
+    </div>
+
+    <div class="logos">
+      <div class="lg big on-paper"><span class="label">ראשי · רקע בהיר</span><img src="brand/logo-dark.png" alt="לוגו שפרבר בגרסה כהה"></div>
+      <div class="lg on-ink"><span class="label">רקע כהה</span><img src="brand/logo-light.png" alt="לוגו שפרבר בגרסה בהירה"></div>
+      <div class="lg on-navy"><span class="label">רקע כחול</span><img src="brand/logo-light.png" alt=""></div>
+      <div class="lg on-yellow"><span class="label">רקע צהוב</span><img src="brand/logo-dark.png" alt=""></div>
+      <div class="lg on-photo"><span class="label">על צילום</span><img src="brand/logo-light.png" alt=""></div>
+    </div>
+
+    <div class="anatomy">
+      <div class="construct" aria-label="שטח מוגן סביב הלוגו">
+        <div class="frame">
+          <span class="xb t"></span><span class="xb r"></span>
+          <img src="brand/logo-light.png" alt="">
+          <span class="x t">X</span><span class="x r">X</span>
+        </div>
+      </div>
+      <div>
+        <h3 style="margin-bottom:28px">אנטומיה ושטח מוגן</h3>
+        <div class="parts">
+          <div class="part"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="28" fill="#F49CC4"/></svg><div><b>עיגול ורוד</b><p>הבסיס. תמיד משמאל, תמיד הצורה הגדולה ביותר.</p></div></div>
+          <div class="part"><svg viewBox="0 0 64 64"><polygon points="12,4 60,32 12,60" fill="#12475C"/></svg><div><b>משולש כחול</b><p>חופף לעיגול מלמעלה ומצביע ימינה, אל העתיד.</p></div></div>
+          <div class="part"><svg viewBox="0 0 64 64"><rect x="2" y="24" width="60" height="16" fill="#D6CC3A"/></svg><div><b>קורה צהובה</b><p>חוצה את העיגול ויוצרת את הכתום בנקודת המפגש.</p></div></div>
+        </div>
+        <div class="rules">
+          <div><b class="mono">X</b><span>שטח מוגן = גובה הקורה הצהובה, מכל צד</span></div>
+          <div><b class="mono">24mm / 80px</b><span>גודל מינימלי בדפוס ובמסך</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="misuse" aria-label="שימושים אסורים">
+      <div><div class="mis m1"><img src="brand/logo-dark.png" alt=""></div><span class="mis-cap">לא למתוח או לעוות</span></div>
+      <div><div class="mis m2"><img src="brand/logo-dark.png" alt=""></div><span class="mis-cap">לא לסובב</span></div>
+      <div><div class="mis m3"><img src="brand/logo-dark.png" alt=""></div><span class="mis-cap">לא לשנות צבעים</span></div>
+      <div><div class="mis m4"><img src="brand/logo-light.png" alt=""></div><span class="mis-cap">לא על רקע עמוס בלי ניגודיות</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- COLOR -->
+<section class="band paper2" id="color">
+  <div class="wrap">
+    <div class="head">
+      <div>
+        <div class="chap"><i></i>פרק 03 <b>· צבע</b></div>
+        <h2>הפלטה<br>נולדה בלוגו</h2>
+      </div>
+      <p class="lead">ארבעה צבעי יסוד נלקחו ישירות מהצורות, והכתום נוצר מהחפיפה שלהן. שני הצבעים הניטרליים, דיו ונייר, נושאים את רוב השטח ונותנים לצבעים לנשום.</p>
+    </div>
+
+    <div class="swatches">
+      <div class="sw">
+        <div class="chip" style="background:#F49CC4;color:#08202C"><span class="label">עיגול</span><h3>ורוד בית</h3></div>
+        <div class="tints"><i style="background:#F49CC4"></i><i style="background:#F6B0D0"></i><i style="background:#F8C4DC"></i><i style="background:#FBD7E7"></i><i style="background:#FDEBF3"></i></div>
+        <dl><dt>HEX</dt><dd class="mono">#F49CC4</dd><dt>RGB</dt><dd class="mono">244 156 196</dd><dt>CMYK</dt><dd class="mono">0 36 20 4</dd></dl>
+      </div>
+      <div class="sw">
+        <div class="chip" style="background:#12475C;color:#F7F3EC"><span class="label">משולש</span><h3>כחול כיוון</h3></div>
+        <div class="tints"><i style="background:#12475C"></i><i style="background:#416C7D"></i><i style="background:#71919D"></i><i style="background:#A0B5BE"></i><i style="background:#D0DADE"></i></div>
+        <dl><dt>HEX</dt><dd class="mono">#12475C</dd><dt>RGB</dt><dd class="mono">18 71 92</dd><dt>CMYK</dt><dd class="mono">80 23 0 64</dd></dl>
+      </div>
+      <div class="sw">
+        <div class="chip" style="background:#D6CC3A;color:#08202C"><span class="label">קורה</span><h3>צהוב יסוד</h3></div>
+        <div class="tints"><i style="background:#D6CC3A"></i><i style="background:#DED661"></i><i style="background:#E6E089"></i><i style="background:#EFEBB0"></i><i style="background:#F7F5D8"></i></div>
+        <dl><dt>HEX</dt><dd class="mono">#D6CC3A</dd><dt>RGB</dt><dd class="mono">214 204 58</dd><dt>CMYK</dt><dd class="mono">0 5 73 16</dd></dl>
+      </div>
+      <div class="sw">
+        <div class="chip" style="background:#D3833A;color:#08202C"><span class="label">חפיפה</span><h3>כתום שותפות</h3></div>
+        <div class="tints"><i style="background:#D3833A"></i><i style="background:#DC9C61"></i><i style="background:#E5B589"></i><i style="background:#EDCDB0"></i><i style="background:#F6E6D8"></i></div>
+        <dl><dt>HEX</dt><dd class="mono">#D3833A</dd><dt>RGB</dt><dd class="mono">211 131 58</dd><dt>CMYK</dt><dd class="mono">0 38 73 17</dd></dl>
+      </div>
+    </div>
+    <div class="neutrals">
+      <div class="sw"><div class="chip" style="background:#08202C;color:#F7F3EC;justify-content:space-between"><h3>דיו</h3><span class="mono">#08202C · 8 32 44</span></div></div>
+      <div class="sw"><div class="chip" style="background:#F7F3EC;color:#08202C;justify-content:space-between;box-shadow:inset 0 0 0 1px #d8cfbf"><h3>נייר</h3><span class="mono">#F7F3EC · 247 243 236</span></div></div>
+    </div>
+
+    <div class="ratio">
+      <span class="label">יחס שימוש מומלץ בכל עיצוב</span>
+      <div class="barline">
+        <div style="flex:55;background:#08202C;color:#F7F3EC">דיו 55%</div>
+        <div style="flex:22;background:#F7F3EC;color:#08202C;box-shadow:inset 0 0 0 1px #d8cfbf">נייר 22%</div>
+        <div style="flex:10;background:#D6CC3A;color:#08202C">צהוב 10%</div>
+        <div style="flex:7;background:#F49CC4;color:#08202C">ורוד 7%</div>
+        <div style="flex:4;background:#12475C;color:#F7F3EC">4%</div>
+        <div style="flex:2;background:#D3833A"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TYPE -->
+<section class="band" id="type">
+  <div class="wrap">
+    <div class="head">
+      <div>
+        <div class="chap"><i></i>פרק 04 <b>· טיפוגרפיה</b></div>
+        <h2>שני קולות,<br>שפה אחת</h2>
+      </div>
+      <p class="lead">Days הוא הקול של הכותרות: צר, גאומטרי ומבני, כמו עמודי בטון. Polin נושא את הטקסט הרץ: פתוח, קריא וחם. לא משלבים פונטים נוספים.</p>
+    </div>
+    <div class="typo">
+      <div class="spec">
+        <span class="label">כותרות · Days</span>
+        <div class="big">אב</div>
+        <div class="abc">אבגדהוזחטיכלמנסעפצקרשת 0123456789</div>
+        <div class="weights"><span style="font-weight:400">Regular</span><span style="font-weight:700">Bold</span></div>
+      </div>
+      <div class="spec body">
+        <span class="label">טקסט רץ · Polin</span>
+        <div class="big">אב</div>
+        <p>שפרבר בנייה מלווה כל פרויקט מאיתור הקרקע, דרך תכנון והדמיה מלאה, ועד ביצוע ומסירת המפתח לדיירים. אנחנו מאמינים שבניין טוב מוסיף ערך לשכונה כולה.</p>
+        <div class="weights" style="font-family:var(--body)"><span style="font-weight:400">Regular</span><span style="font-weight:700">Bold</span></div>
+      </div>
+    </div>
+    <div class="scale">
+      <div><span class="label mono">H1 · 88/88</span><span style="font-family:var(--display);font-weight:700;font-size:clamp(40px,6vw,88px);line-height:1">ברוכים הבאים הביתה</span></div>
+      <div><span class="label mono">H2 · 48/52</span><span style="font-family:var(--display);font-weight:700;font-size:clamp(28px,3.5vw,48px);line-height:1.1">תכנון שרואה את העתיד</span></div>
+      <div><span class="label mono">H3 · 24/30</span><span style="font-family:var(--display);font-size:24px">שלד חזק, יסודות לדורות</span></div>
+      <div><span class="label mono">Body · 17/27</span><span>ביצוע לפי תקני הבטיחות והאיכות המחמירים, פיקוח צמוד בכל שלב ולוחות זמנים שעומדים בהם.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- GRAPHIC LANGUAGE -->
+<section class="band paper" id="language">
+  <div class="wrap">
+    <div class="head">
+      <div>
+        <div class="chap"><i></i>פרק 05 <b>· שפה גרפית</b></div>
+        <h2>הצורות<br>יוצאות לשטח</h2>
+      </div>
+      <p class="lead">הצורות של הלוגו משמשות גם כחומר עיצובי: דוגמאות, סימני פיסוק ויזואליים ופסים. כלל אחד חשוב: בכל עיצוב מופיעה צורה דומיננטית אחת בלבד.</p>
+    </div>
+    <div class="pattern" aria-hidden="true">
+      <span class="p-c"></span><span class="p-b"></span><span class="p-t"></span><span class="p-o"></span><span class="p-q"></span><span class="p-c"></span><span class="p-b"></span><span class="p-t"></span>
+      <span class="p-t"></span><span class="p-q"></span><span class="p-c"></span><span class="p-b"></span><span class="p-t"></span><span class="p-o"></span><span class="p-c"></span><span class="p-q"></span>
+      <span class="p-b"></span><span class="p-o"></span><span class="p-t"></span><span class="p-c"></span><span class="p-q"></span><span class="p-b"></span><span class="p-t"></span><span class="p-o"></span>
+    </div>
+    <div class="lang">
+      <div>
+        <span class="label">כפתורים</span>
+        <h3>פינה עגולה, פינה ישרה</h3>
+        <p>לכל כפתור שתי פינות מעוגלות נגדיות ושתיים חדות. כך הכפתור מזכיר גם את העיגול וגם את הקורה.</p>
+        <div class="btns"><button class="btn y" type="button">צרו קשר</button><button class="btn n" type="button">לפרויקטים</button><button class="btn o" type="button">עוד</button></div>
+      </div>
+      <div>
+        <span class="label">קו מפריד</span>
+        <h3>הקורה הצהובה</h3>
+        <p>מתחת לכל כותרת ראשית מופיעה קורה צהובה עם קצה כתום, בדיוק כמו בלוגו.</p>
+        <span class="bar" style="margin-top:auto"></span>
+      </div>
+      <div>
+        <span class="label">סימן</span>
+        <h3>הנקודה הוורודה</h3>
+        <p>עיגול ורוד קטן פותח כל כותרת משנה ומספור פרקים, ומחבר את הטקסט לסימן.</p>
+        <div class="chap" style="margin:auto 0 0"><i></i>פרויקט <b>· 03</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MOCKUPS -->
+<section class="band" id="mockups">
+  <div class="wrap">
+    <div class="head">
+      <div>
+        <div class="chap"><i></i>פרק 06 <b>· מוקאפים</b></div>
+        <h2>המותג<br>בעולם האמיתי</h2>
+      </div>
+      <p class="lead">כך המותג נראה במגע עם הלקוחות: בגדר האתר, בשלט הפרויקט, בכרטיס הביקור, בציוד השטח ובערוצים הדיגיטליים.</p>
+    </div>
+
+    <div class="mocks">
+      <figure class="mock s6 hoard" style="margin:0">
+        <div class="fence">
+          <div class="f1"><img src="brand/logo-light.png" alt=""><b>כאן נבנה<br><em>הבית הבא שלכם</em></b></div>
+          <div class="f2"></div>
+          <div class="f3"><span>מגורים · 5 קומות<br>מהקרקע ועד המפתח</span></div>
+        </div>
+        <figcaption>גדר אתר בנייה</figcaption>
+      </figure>
+
+      <figure class="mock s3 sign" style="margin:0">
+        <div class="board">
+          <div class="top"><img src="brand/logo-light.png" alt=""><b>יזם ומבצע</b></div>
+          <div class="mid"><b>פרויקט מגורים</b><span>תכנון: שפרבר בנייה · ביצוע: שפרבר בנייה</span><span>אכלוס משוער: 2028</span></div>
+          <div class="foot"></div>
+        </div>
+        <figcaption>שלט פרויקט</figcaption>
+      </figure>
+
+      <figure class="mock s3 cards" style="margin:0">
+        <div class="card back">
+          <div><b>שם מלא</b><span>מנהל/ת פרויקטים</span></div>
+          <div class="ct">tel 00-000-0000<br>name@company.co.il</div>
+        </div>
+        <div class="card front"><img src="brand/logo-light.png" alt=""></div>
+        <figcaption>כרטיסי ביקור</figcaption>
+      </figure>
+
+      <figure class="mock s2 hat" style="margin:0">
+        <svg viewBox="0 0 400 300" aria-hidden="true">
+          <defs>
+            <linearGradient id="hg" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#1d6380"/><stop offset=".55" stop-color="#12475C"/><stop offset="1" stop-color="#0a2b39"/></linearGradient>
+            <clipPath id="dome"><path d="M70 205 C70 105 130 48 200 48 C270 48 330 105 330 205 Z"/></clipPath>
+          </defs>
+          <ellipse cx="200" cy="222" rx="185" ry="34" fill="#0b2f3d"/>
+          <ellipse cx="200" cy="214" rx="178" ry="28" fill="#155570"/>
+          <path d="M70 205 C70 105 130 48 200 48 C270 48 330 105 330 205 Z" fill="url(#hg)"/>
+          <path d="M188 50 C176 90 172 150 174 205 L226 205 C228 150 224 90 212 50 Z" fill="#0f3d50" opacity=".55"/>
+          <g clip-path="url(#dome)">
+            <rect x="122" y="104" width="156" height="99" rx="12" fill="#F7F3EC"/><g transform="translate(134 116) scale(.17)">
+              <circle cx="214" cy="257" r="214" fill="#F49CC4"/>
+              <polygon points="364,0 618,148 364,293" fill="#12475C" style="mix-blend-mode:multiply"/>
+              <rect x="166" y="344" width="608" height="86" fill="#D6CC3A" style="mix-blend-mode:multiply"/>
+            </g>
+          </g>
+          <path d="M96 120 C120 80 160 60 196 58" stroke="#fff" stroke-opacity=".25" stroke-width="8" fill="none" stroke-linecap="round"/>
+        </svg>
+        <figcaption>קסדת שטח</figcaption>
+      </figure>
+
+      <figure class="mock s2 phone-wrap" style="margin:0">
+        <div class="phone">
+          <div class="screen">
+            <img src="brand/logo-light.png" alt="">
+            <b>ברוכים הבאים<br><em>הביתה</em></b>
+            <i></i>
+            <span>צרו קשר</span>
+          </div>
+        </div>
+        <figcaption>אתר במובייל</figcaption>
+      </figure>
+
+      <figure class="mock s2 social" style="margin:0">
+        <img src="brand/logo-light.png" alt="">
+        <b>החזון<br>מקבל <em>ממדים</em></b>
+        <figcaption>פוסט לרשתות</figcaption>
+      </figure>
+
+      <figure class="mock s3 stat" style="margin:0">
+        <div class="a4"><img src="brand/logo-dark.png" alt=""><i></i><i></i><i class="s"></i><i></i><i></i><i class="s"></i></div>
+        <div class="env"><img src="brand/logo-light.png" alt=""></div>
+        <figcaption>נייר מכתבים ומעטפה</figcaption>
+      </figure>
+
+      <figure class="mock s3 icons" style="margin:0">
+        <span class="i1"></span><span class="i2"></span><span class="i3"></span><span class="i4"><img src="brand/logo-dark.png" alt=""></span>
+        <figcaption>אייקונים ואווטארים</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<footer class="band paper">
+  <div class="wrap">
+    <img src="brand/logo-dark.png" alt="שפרבר">
+    <p>ספר המותג של שפרבר בנייה · מהדורה 01 · 2026</p>
+  </div>
+</footer>
+
+</div>

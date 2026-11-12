@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>מוקאפ וידאו שפרבר</title>
+<style>
+@font-face{font-family:"Days";src:url(fonts/Days-Regular.woff2) format("woff2");font-weight:400}
+@font-face{font-family:"Days";src:url(fonts/Days-Bold.woff2) format("woff2");font-weight:700}
+@font-face{font-family:"Polin";src:url(fonts/Polin-Regular.woff2) format("woff2");font-weight:400}
+:root{--pink:#F49CC4;--navy:#12475C;--yellow:#D6CC3A;--orange:#D3833A;--ink:#08202C;--ink2:#0F2E3D;--paper:#F7F3EC}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--ink)}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:radial-gradient(120% 80% at 50% 45%,#0F2E3D 0%,#08202C 60%,#061922 100%);perspective:2400px;font-family:"Polin",sans-serif;color:var(--paper)}
+.abs{position:absolute;left:0;top:0;will-change:transform,opacity}
+
+#bgShapes{width:1500px;height:853px;opacity:0}
+#ring1,#ring2{border-radius:50%;border:2px solid rgba(244,156,196,.16)}
+#ring1{width:900px;height:900px}
+#ring2{width:560px;height:560px;border-color:rgba(214,204,58,.14)}
+
+#logoBox{width:440px}
+#logoBox img{display:block;width:100%;height:auto}
+#logoSvg{position:absolute;left:0;top:0;width:100%;height:auto;overflow:visible}
+
+#title{width:640px;text-align:right}
+#title .eb{display:flex;align-items:center;gap:12px;font-family:"Days";font-size:26px;letter-spacing:.14em;color:var(--pink)}
+#title .eb i{width:16px;height:16px;border-radius:50%;background:var(--pink)}
+#title h1{font-family:"Days";font-weight:700;font-size:96px;line-height:1;margin-top:10px}
+#title h1 em{font-style:normal;color:var(--yellow)}
+
+#outro{width:1080px;text-align:center}
+#outro b{display:block;font-family:"Days";font-weight:700;font-size:92px;line-height:1}
+#outro b em{font-style:normal;color:var(--yellow)}
+#pill{display:inline-block;margin-top:44px;font-family:"Days";font-size:34px;background:var(--yellow);color:var(--ink);padding:18px 40px;border-radius:26px 0}
+
+/* credit end card */
+#paper{position:absolute;inset:0;background:var(--paper);clip-path:circle(0px at 50% 52%)}
+#credit{width:1080px;text-align:center}
+#credit .lbl{font-family:"Days";font-size:34px;letter-spacing:.12em;color:#0B3D5C;opacity:.75}
+#ygd{display:block;width:860px;height:auto;margin:36px auto 0;overflow:visible}
+#ygd .st{fill:none;stroke:#0B3D5C;stroke-width:34;stroke-linecap:round;stroke-linejoin:round}
+
+/* devices */
+.shadow{width:900px;height:120px;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.55),rgba(0,0,0,0))}
+#lap{width:1010px;height:602px;transform-style:preserve-3d}
+.lid{position:absolute;left:55px;top:0;width:900px;height:578px;border-radius:26px 26px 6px 6px;background:linear-gradient(160deg,#2b3338,#0b0f12 60%);padding:20px;box-shadow:0 0 0 2px #39434a inset}
+.lid::after{content:"";position:absolute;left:50%;top:8px;width:8px;height:8px;margin-left:-4px;border-radius:50%;background:#1c2329}
+.screen-wrap{position:relative;width:860px;height:538px;overflow:hidden;border-radius:4px;background:#000}
+.deck{position:absolute;left:0;top:574px;width:1010px;height:28px;border-radius:2px 2px 22px 22px;background:linear-gradient(#d9dde0,#a9b0b5 55%,#7e868c)}
+.deck::before{content:"";position:absolute;left:50%;top:0;width:150px;height:9px;margin-left:-75px;border-radius:0 0 10px 10px;background:#8d959b}
+.glare{position:absolute;inset:0;background:linear-gradient(115deg,rgba(255,255,255,.10) 0%,rgba(255,255,255,0) 38%);pointer-events:none;z-index:9}
+
+#phone{width:300px;height:626px;border-radius:50px;background:linear-gradient(150deg,#3a444b,#0d1216 50%,#242c31);padding:10px;box-shadow:0 0 0 2px #4a555c inset,0 40px 60px -20px rgba(0,0,0,.6)}
+#phone .screen-wrap{width:280px;height:606px;border-radius:40px}
+#phone .island{position:absolute;left:50%;top:20px;width:86px;height:24px;margin-left:-43px;border-radius:14px;background:#000;z-index:10}
+
+/* -------- site screen (native size, scaled) -------- */
+.scr{position:absolute;left:0;top:0;transform-origin:0 0;overflow:hidden;background:var(--ink);direction:rtl}
+.scr.desk{width:1440px;height:900px;transform:scale(.59722)}
+.scr.mob{width:390px;height:844px;transform:scale(.71795)}
+.scr canvas{position:absolute;inset:0;width:100%;height:100%}
+.scr .sh-base,.scr .sh-r,.scr .sh-l,.scr .dim{position:absolute;inset:0}
+.scr.desk .sh-base{background:linear-gradient(to bottom,rgba(8,32,44,.6) 0%,rgba(8,32,44,0) 22%),linear-gradient(to top,rgba(8,32,44,.55) 0%,rgba(8,32,44,0) 30%)}
+.scr .sh-r{background:linear-gradient(to left,rgba(8,32,44,.82) 0%,rgba(8,32,44,.45) 32%,rgba(8,32,44,0) 62%)}
+.scr .sh-l{background:linear-gradient(to right,rgba(8,32,44,.82) 0%,rgba(8,32,44,.45) 32%,rgba(8,32,44,0) 62%)}
+.scr.mob .sh-base{background:linear-gradient(to bottom,rgba(8,32,44,.65) 0%,rgba(8,32,44,0) 20%),linear-gradient(to top,rgba(8,32,44,.92) 0%,rgba(8,32,44,.6) 38%,rgba(8,32,44,0) 66%)}
+.scr .dim{background:rgba(8,32,44,.62);opacity:0}
+.scr .hdr{position:absolute;top:0;right:0;left:0;display:flex;align-items:center;justify-content:space-between}
+.scr.desk .hdr{padding:30px 58px}
+.scr.mob .hdr{padding:52px 20px 0}
+.scr .hdr img{display:block;width:auto}
+.scr.desk .hdr img{height:74px}
+.scr.mob .hdr img{height:52px}
+.scr .acts{display:flex;gap:22px;align-items:center}
+.scr .cta{font-family:"Days";font-size:15px;padding:11px 22px;border:1px solid rgba(247,243,236,.35);border-radius:18px 0;background:rgba(8,32,44,.2)}
+.scr .burg{width:46px;height:46px;border-radius:12px 0;display:grid;place-items:center;background:rgba(8,32,44,.35);border:1px solid rgba(247,243,236,.2)}
+.scr .burg span{display:block;width:18px;height:2px;background:var(--paper);position:relative}
+.scr .burg span::before,.scr .burg span::after{content:"";position:absolute;right:0;height:2px;background:var(--paper)}
+.scr .burg span::before{top:-6px;width:18px}.scr .burg span::after{top:6px;width:11px;background:var(--yellow)}
+.scr .panel{position:absolute}
+.scr.desk .panel{top:50%;width:560px;transform:translateY(-46%)}
+.scr.mob .panel{left:20px;right:20px;bottom:64px}
+.scr .eb{display:flex;align-items:center;gap:12px;font-family:"Days";letter-spacing:.14em;color:var(--pink)}
+.scr.desk .eb{font-size:14px;margin-bottom:22px}
+.scr.mob .eb{font-size:12px;margin-bottom:14px}
+.scr .eb i{width:12px;height:12px;border-radius:50%;background:var(--pink);flex:none}
+.scr .eb small{color:var(--paper);opacity:.6;font-size:inherit;letter-spacing:.06em}
+.scr h2{font-family:"Days";font-weight:700;line-height:.98}
+.scr.desk h2{font-size:78px}
+.scr.mob h2{font-size:40px}
+.scr h2 em{font-style:normal;color:var(--yellow)}
+.scr .bar{display:block;background:var(--yellow);position:relative;transform-origin:right}
+.scr .bar::before{content:"";position:absolute;right:0;top:0;bottom:0;width:34%;background:var(--orange)}
+.scr.desk .bar{height:10px;width:200px;margin:28px 0 26px}
+.scr.mob .bar{height:8px;width:130px;margin:18px 0 16px}
+.scr p{line-height:1.65;color:rgba(247,243,236,.88)}
+.scr.desk p{font-size:18px;max-width:44ch}
+.scr.mob p{font-size:15.5px}
+
+/* contact panel */
+.scr .panel.contact{text-align:center}
+.scr.desk .panel.contact{left:50%;width:600px;top:50%;transform:translate(-50%,-48%)}
+.scr.mob .panel.contact{top:50%;bottom:auto;transform:translateY(-44%)}
+.scr .contact .eb{justify-content:center}
+.scr .contact .bar{margin-inline:auto;transform-origin:center}
+.scr .form{display:grid;text-align:right;position:relative}
+.scr.desk .form{gap:12px;margin-top:6px}
+.scr.mob .form{gap:9px}
+.scr .row{display:grid;align-items:center}
+.scr.desk .row{grid-template-columns:118px 1fr;gap:18px}
+.scr.mob .row{grid-template-columns:82px 1fr;gap:10px}
+.scr .row > span{font-family:"Days";color:rgba(247,243,236,.85)}
+.scr.desk .row > span{font-size:16px}
+.scr.mob .row > span{font-size:13px}
+.scr .in{display:flex;align-items:center;gap:2px;border:1px solid rgba(247,243,236,.22);background:rgba(247,243,236,.08);border-radius:12px 0;color:var(--paper)}
+.scr.desk .in{height:52px;padding:0 18px;font-size:17px}
+.scr.mob .in{height:42px;padding:0 13px;font-size:14px}
+.scr .in.focus{border-color:var(--yellow);background:rgba(247,243,236,.13)}
+.scr .in .tv{font-weight:400;unicode-bidi:plaintext}
+.scr .in .caret{display:inline-block;width:2px;background:var(--yellow);opacity:0}
+.scr.desk .in .caret{height:22px}.scr.mob .in .caret{height:18px}
+.scr .send{display:flex;align-items:center;justify-content:space-between;font-family:"Days";background:var(--yellow);color:var(--ink);border-radius:18px 0;margin-top:6px}
+.scr.desk .send{font-size:18px;padding:16px 24px}
+.scr.mob .send{font-size:15px;padding:13px 18px}
+.scr .thanks{position:absolute;left:0;right:0;font-family:"Days";color:var(--yellow);opacity:0;text-align:center}
+.scr.desk .thanks{bottom:110px;font-size:30px}
+.scr.mob .thanks{bottom:120px;font-size:22px}
+.scr .thanks i{display:block;margin:0 auto 16px;border-radius:50%;background:var(--pink)}
+.scr.desk .thanks i{width:44px;height:44px}.scr.mob .thanks i{width:34px;height:34px}
+
+.scr .rail{position:absolute;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:6px}
+.scr .rail div{display:flex;align-items:center;gap:14px;padding:8px 0;opacity:.55}
+.scr .rail .tk{width:18px;height:3px;background:var(--paper)}
+.scr .rail .on{opacity:1}
+.scr .rail .on .tk{width:46px;background:var(--yellow)}
+.scr .rail .nm{font-family:"Days";font-size:11px;opacity:.7;width:18px}
+.scr .rail .lb{font-family:"Days";font-size:13px;white-space:nowrap;opacity:0}
+.scr .rail .on .lb{opacity:1}
+.scr .prog{position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(247,243,236,.08)}
+.scr .prog i{position:absolute;right:0;top:0;bottom:0;background:var(--yellow)}
+.scr .prog i::before{content:"";position:absolute;right:0;top:0;bottom:0;width:22%;background:var(--pink)}
+.scr .ring{position:absolute;border-radius:50%;border:1px solid rgba(244,156,196,.35)}
+.scr.desk .ring{width:500px;height:500px;right:-170px;top:110px}
+.scr.mob .ring{width:310px;height:310px;right:-150px;top:70px}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="ring1" class="abs"></div>
+  <div id="ring2" class="abs"></div>
+  <svg id="bgShapes" class="abs" viewBox="0 0 774 440" aria-hidden="true">
+    <defs><clipPath id="bgc"><circle cx="214" cy="257" r="214"/></clipPath></defs>
+    <circle cx="214" cy="257" r="214" fill="#F49CC4"/>
+    <polygon points="364,0 618,148 364,293" fill="#1C5A73"/>
+    <rect x="166" y="344" width="608" height="86" fill="#D6CC3A"/>
+    <g clip-path="url(#bgc)"><polygon points="364,0 618,148 364,293" fill="#2B3A62"/><rect x="166" y="344" width="608" height="86" fill="#D3833A"/></g>
+  </svg>
+
+  <div id="lapShadow" class="abs shadow"></div>
+  <div id="lap" class="abs">
+    <div class="lid"><div class="screen-wrap" id="deskWrap"><div class="glare"></div></div></div>
+    <div class="deck"></div>
+  </div>
+
+  <div id="phShadow" class="abs shadow" style="width:340px;height:70px"></div>
+  <div id="phone" class="abs"><div class="island"></div><div class="screen-wrap" id="mobWrap"><div class="glare"></div></div></div>
+
+  <div id="title" class="abs">
+    <div class="eb"><i></i>האתר החדש</div>
+    <h1>שפרבר <em>בנייה</em></h1>
+  </div>
+
+  <div id="logoBox" class="abs">
+    <img id="logoPng" src="brand/logo-light.png" alt="">
+    <svg id="logoSvg" viewBox="0 0 774 440" aria-hidden="true">
+      <defs><clipPath id="lgc"><circle cx="214" cy="257" r="214"/></clipPath></defs>
+      <g id="lC"><circle cx="214" cy="257" r="214" fill="#F49CC4"/></g>
+      <g id="lT"><polygon points="364,0 618,148 364,293" fill="#12475C"/></g>
+      <g id="lB"><rect x="166" y="344" width="608" height="86" fill="#D6CC3A"/></g>
+      <g id="lO" clip-path="url(#lgc)"><polygon points="364,0 618,148 364,293" fill="#22355A"/><rect x="166" y="344" width="608" height="86" fill="#D3833A"/></g>
+    </svg>
+  </div>
+
+  <div id="outro" class="abs">
+    <b>מהקרקע<br><em>ועד המפתח</em></b>
+    <span id="pill">האתר החדש באוויר</span>
+  </div>
+
+  <!-- credit end card -->
+  <div id="paper"></div>
+  <div id="credit" class="abs">
+    <div class="lbl" id="creditLbl">עוצב ונבנה על ידי</div>
+    <svg id="ygd" viewBox="40 200 1130 400" aria-label="yagoda">
+      <!-- fills (drawn under the strokes) -->
+      <polygon class="fl" data-c="315 385" points="287,404 343,404 315,352" fill="#DEE14A"/>
+      <polygon class="fl" data-c="478 362" points="420,330 536,330 478,426" fill="#14DDB4"/>
+      <circle  class="fl" data-c="675 395" cx="675" cy="395" r="64" fill="#DEE14A"/>
+      <polygon class="fl" data-c="873 362" points="815,330 931,330 873,426" fill="#14DDB4"/>
+      <polygon class="fl" data-c="1045 385" points="1017,404 1073,404 1045,352" fill="#DEE14A"/>
+      <!-- strokes -->
+      <path class="st" pathLength="1" d="M68 315 L158 462"/>
+      <path class="st" pathLength="1" d="M243 315 L105 563"/>
+      <path class="st" pathLength="1" d="M225 470 L315 312 L405 470"/>
+      <path class="st" pathLength="1" d="M268 420 L362 420"/>
+      <path class="st" pathLength="1" d="M478 465 L385 312 L570 312 L420 565"/>
+      <path class="st" pathLength="1" d="M675 313 A82 82 0 1 1 674.9 313"/>
+      <path class="st" pathLength="1" d="M1015 232 L873 470 L780 312 L965 312"/>
+      <path class="st" pathLength="1" d="M955 470 L1045 312 L1135 470"/>
+      <path class="st" pathLength="1" d="M998 420 L1092 420"/>
+    </svg>
+  </div>
+</div>
+
+<script>
+const N = 145, SEGS = ["2","3","4","5"];
+const HOLD = 0.9, PLAY = 2.5, S0 = 3.2;
+const ps = k => S0 + HOLD + k * (HOLD + PLAY);
+const DUR = 28;
+const PANELS = [
+  ["שפרבר בנייה","01 / הקרקע","כל בניין גדול","מתחיל במגרש ריק","אנחנו רואים את מה שעוד לא קיים. יזמות, תכנון וביצוע של פרויקטים למגורים, מהקרקע ועד מסירת המפתח."],
+  ["תכנון","02","תכנון שרואה","את העתיד","מהנדסים, אדריכלים ומנהלי פרויקט עובדים כצוות אחד, עוד לפני שנוצק הבטון הראשון."],
+  ["הדמיה","03","החזון מקבל","ממדים","מודל דיגיטלי מלא בקנה מידה אמיתי. כל קומה וכל פרט נבדקים מראש."],
+  ["ביצוע","04","שלד חזק.","יסודות לדורות.","ביצוע לפי תקני הבטיחות והאיכות המחמירים, ולוחות זמנים שעומדים בהם."],
+  ["מסירה","05","ברוכים הבאים","הביתה","אדריכלות עכשווית, חומרים איכותיים וגימור מוקפד. בניין שמוסיף ערך לשכונה."]
+];
+const STAGES = ["הקרקע","תכנון","הדמיה","שלד","מסירה","צור קשר"];
+const CONTACT_IN = 17.6;
+const inT = [2.7, ...[0,1,2,3].map(k => ps(k) + 0.6 * PLAY), CONTACT_IN];
+const outT = [ps(0), ps(1), ps(2), ps(3), CONTACT_IN, Infinity];
+/* contact typing script (screen-local time) */
+const TYPE = [
+  { at: 18.5, text: "דנה כהן", cps: 11 },
+  { at: 19.35, text: "054-1234567", cps: 16 },
+  { at: 20.15, text: "בנייה למגורים", cps: 0 }
+];
+const PRESS = 20.55, THANKS = 20.85;
+
+const clamp = v => Math.max(0, Math.min(1, v));
+const lerp = (a,b,t) => a + (b-a) * t;
+const eIO = t => t < .5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2;
+const eOut = t => 1 - Math.pow(1-t, 3);
+const eIn = t => t*t*t;
+const eBack = t => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3*Math.pow(t-1,3) + c1*Math.pow(t-1,2); };
+const seg = (t,a,b,f=eIO) => f(clamp((t-a)/(b-a)));
+
+/* ---------- build screens ---------- */
+function contactHTML(){
+  return `<div class="panel contact"><div class="eb" data-j="1"><i></i>בואו נדבר <small>· 06</small></div>
+    <h2 data-j="2">הפרויקט הבא שלכם<br><em>מתחיל כאן</em></h2><span class="bar" data-j="3"></span>
+    <div class="form" data-j="4">
+      ${["שם מלא","טלפון","סוג פרויקט"].map(l=>`<div class="row"><span>${l}</span><div class="in"><b class="tv"></b><i class="caret"></i></div></div>`).join("")}
+      <div class="send">שליחה <span>←</span></div>
+    </div>
+    <div class="thanks"><i></i>תודה! נחזור אליכם בקרוב.</div></div>`;
+}
+function buildScreen(wrap, mode){
+  const s = document.createElement("div");
+  s.className = "scr " + mode;
+  const W = mode === "desk" ? 1440 : 390, H = mode === "desk" ? 900 : 844;
+  s.innerHTML = `<canvas width="${W}" height="${H}"></canvas><div class="sh-base"></div>${mode==="desk"?'<div class="sh-r"></div><div class="sh-l"></div>':''}<div class="dim"></div><div class="ring"></div>
+    <div class="hdr"><img src="brand/logo-light.png" alt=""><div class="acts">${mode==="desk"?'<span class="cta">צרו קשר</span>':''}<span class="burg"><span></span></span></div></div>
+    ${mode==="desk"?'<div class="rail">'+STAGES.map((n,k)=>`<div><span class="nm">0${k+1}</span><span class="tk"></span><span class="lb">${n}</span></div>`).join("")+'</div>':''}
+    ${PANELS.map(p=>`<div class="panel"><div class="eb" data-j="1"><i></i>${p[0]} <small>· ${p[1]}</small></div><h2 data-j="2">${p[2]}<br><em>${p[3]}</em></h2><span class="bar" data-j="3"></span><p data-j="4">${p[4]}</p></div>`).join("")}
+    ${contactHTML()}
+    <div class="prog"><i></i></div>`;
+  wrap.prepend(s);
+  const o = { el:s, mode, W, H, ctx:s.querySelector("canvas").getContext("2d"),
+    panels:[...s.querySelectorAll(".panel")].map(p => ({el:p, kids:[...p.querySelectorAll(":scope > [data-j]")]})),
+    shR:s.querySelector(".sh-r"), shL:s.querySelector(".sh-l"), dim:s.querySelector(".dim"), rail:s.querySelector(".rail"),
+    railItems: s.querySelector(".rail") ? [...s.querySelectorAll(".rail > div")] : [],
+    prog:s.querySelector(".prog i"), ring:s.querySelector(".ring"),
+    ins:[...s.querySelectorAll(".contact .in")], form:s.querySelector(".contact .form"), send:s.querySelector(".contact .send"), thanks:s.querySelector(".contact .thanks") };
+  o.ctx.imageSmoothingQuality = "high";
+  return o;
+}
+const desk = buildScreen(document.getElementById("deskWrap"), "desk");
+const mob = buildScreen(document.getElementById("mobWrap"), "mob");
+
+/* ---------- frames ---------- */
+const imgs = SEGS.map(() => new Array(N));
+function loadAll(){
+  const jobs = [];
+  SEGS.forEach((sg,s) => { for (let i=0;i<N;i++){ const im = new Image(); im.src = `frames/${sg}/${String(i+1).padStart(3,"0")}.webp`; imgs[s][i] = im; jobs.push(im.decode().catch(()=>{})); } });
+  return Promise.all(jobs);
+}
+function draw(sc, s, i){
+  const im = imgs[s][i]; if (!im || !im.naturalWidth) return;
+  const {W,H,ctx} = sc, iw = im.naturalWidth, ih = im.naturalHeight;
+  const k = Math.max(W/iw, H/ih), dw = iw*k, dh = ih*k;
+  ctx.drawImage(im, (W-dw)*(W<H?.6:.5), (H-dh)/2, dw, dh);
+}
+
+/* ---------- screen state at time ts ---------- */
+function renderScreen(sc, ts){
+  let sgi = 0, fr = 0, prog = 0;
+  for (let k=0;k<4;k++){
+    if (ts < ps(k)) break;
+    if (ts >= ps(k) + PLAY){ sgi = k; fr = N-1; prog = k+1; }
+    else { const e = eIO((ts-ps(k))/PLAY); sgi = k; fr = Math.round(e*(N-1)); prog = k+e; break; }
+  }
+  draw(sc, sgi, fr);
+  prog = prog/4*0.8 + 0.2*seg(ts, CONTACT_IN, CONTACT_IN+.8);
+  sc.prog.style.width = (prog*100) + "%";
+
+  let cur = 0;
+  sc.panels.forEach((p,i) => {
+    if (ts >= inT[i]) cur = i;
+    if (sc.mode === "desk" && i < 5){ const l = i % 2; p.el.style.right = l ? "auto" : "58px"; p.el.style.left = l ? "58px" : "auto"; }
+    p.kids.forEach((kd,jx) => {
+      const j = jx+1; let o, y, b, sx = 1;
+      if (ts >= outT[i]){ const q = clamp((ts-outT[i])/.4); o = 1-q; y = -18*q; b = 6*q; sx = 1-q; }
+      else { const q = eOut(clamp((ts-inT[i]-j*.1)/.7)); o = q; y = 28*(1-q); b = 8*(1-q); sx = q; }
+      if (kd.classList.contains("bar")){ kd.style.transform = `scaleX(${sx})`; kd.style.opacity = o > 0 ? 1 : 0; }
+      else { kd.style.opacity = o; kd.style.transform = `translateY(${y}px)`; kd.style.filter = b > .05 ? `blur(${b}px)` : "none"; }
+    });
+  });
+
+  /* contact: dim the photo, type into the form, press send, thank-you */
+  sc.dim.style.opacity = seg(ts, CONTACT_IN, CONTACT_IN + .8);
+  let active = -1;
+  TYPE.forEach((f,k) => {
+    const n = f.cps ? Math.max(0, Math.min(f.text.length, Math.floor((ts - f.at) * f.cps))) : (ts >= f.at ? f.text.length : 0);
+    sc.ins[k].querySelector(".tv").textContent = f.text.slice(0, n);
+    const next = TYPE[k+1] ? TYPE[k+1].at : PRESS;
+    if (ts >= f.at - .25 && ts < next) active = k;
+  });
+  sc.ins.forEach((el,k) => {
+    el.classList.toggle("focus", k === active);
+    el.querySelector(".caret").style.opacity = (k === active && TYPE[k].cps && (ts % .8) < .45) ? 1 : 0;
+  });
+  const press = ts >= PRESS && ts < PRESS + .22;
+  sc.send.style.transform = `scale(${press ? .96 : 1})`;
+  sc.send.style.background = ts >= PRESS ? "#F49CC4" : "";
+  const th = seg(ts, THANKS, THANKS + .5, eOut);
+  if (ts >= THANKS){ sc.form.style.opacity = 1 - th; sc.form.style.transform = `translateY(${-14*th}px)`; }
+  sc.thanks.style.opacity = th;
+  sc.thanks.style.transform = `translateY(${20*(1-th)}px) scale(${.9 + .1*th})`;
+
+  if (sc.mode === "desk"){
+    const side = i => i >= 5 ? .5 : i % 2;
+    const tgt = side(cur), prev = cur > 0 ? side(cur-1) : 0;
+    const wl = lerp(prev, tgt, seg(ts, inT[cur], inT[cur]+.9));
+    const fade = 1 - seg(ts, CONTACT_IN, CONTACT_IN+.8);
+    sc.shL.style.opacity = wl === .5 ? 0 : wl * fade; sc.shR.style.opacity = (1-wl) * fade;
+    let ro = 1;
+    for (let k=0;k<4;k++){ const a = ps(k), b = inT[k+1] + .35; if (ts > a-.05 && ts < b+.3) ro = Math.min(ro, 1 - Math.min(clamp((ts-a)/.3), clamp((b+.3-ts)/.3))); }
+    sc.rail.style.opacity = ro;
+    const left = cur % 2 === 0 || cur === 5;
+    sc.rail.style.left = left ? "58px" : "auto"; sc.rail.style.right = left ? "auto" : "58px";
+    sc.rail.style.alignItems = left ? "flex-start" : "flex-end";
+    sc.railItems.forEach((it,k) => { it.classList.toggle("on", k === cur); it.style.flexDirection = left ? "row-reverse" : "row"; });
+    const RX = [0,-800,-20,-780,0,-420];
+    sc.ring.style.transform = `translateX(${lerp(cur ? RX[cur-1] : 0, RX[cur], seg(ts, inT[cur]-.3, inT[cur]+1.2))}px)`;
+  }
+}
+
+function place(el, w, h, x, y, extra="", o=1){
+  el.style.transform = `translate3d(${x-w/2}px,${y-h/2}px,0) ${extra}`;
+  el.style.opacity = o;
+}
+const $ = id => document.getElementById(id);
+const lap = $("lap"), phone = $("phone"), logoBox = $("logoBox"), title = $("title");
+const strokes = [...document.querySelectorAll("#ygd .st")], fills = [...document.querySelectorAll("#ygd .fl")];
+
+/* outro timing */
+const OUT = 21.7;           // devices leave
+const CREDIT = 24.6;        // paper wipe for the credit card
+
+function render(t){
+  /* background */
+  const bgIn = seg(t, 1.6, 2.8), bgOut = seg(t, OUT, OUT+1);
+  place($("bgShapes"), 1500, 853, 560 + Math.sin(t*.25)*40, 1060 + Math.cos(t*.2)*30, `scale(${1 + .04*Math.sin(t*.3)})`, .055*bgIn*(1-bgOut) + .08*seg(t,OUT+.6,OUT+2));
+  place($("ring1"), 900, 900, 200 + Math.sin(t*.2)*60, 520 + Math.cos(t*.17)*40, "", .9);
+  place($("ring2"), 560, 560, 930 + Math.cos(t*.23)*50, 1500 + Math.sin(t*.19)*50, "", .9);
+
+  /* Sperber logo: assemble -> header -> back to center at the end */
+  const lw = 440, lh = lw*791/774;
+  const toTop = seg(t, 1.7, 2.6), back = seg(t, OUT+.2, OUT+1.2);
+  const sTop = 150/440, sEnd = 360/440;
+  let sc = lerp(1, sTop, toTop), lx = lerp(540, 915, toTop), ly = lerp(820, 330, toTop);
+  if (t >= OUT+.2){ sc = lerp(sTop, sEnd, back); lx = lerp(915, 540, back); ly = lerp(330, 600, back); }
+  place(logoBox, lw, lh, lx, ly, `scale(${sc})`, 1);
+  const c = eBack(clamp(t/0.75)), tri = seg(t,.25,.9,eOut), bar = seg(t,.45,1.05,eOut), ov = seg(t,.8,1.1);
+  $("lC").setAttribute("transform", `translate(214 257) scale(${c}) translate(-214 -257)`);
+  $("lT").setAttribute("transform", `translate(${-120*(1-tri)} 0)`); $("lT").style.opacity = tri;
+  $("lB").setAttribute("transform", `translate(774 0) scale(${bar} 1) translate(-774 0)`);
+  $("lO").style.opacity = ov;
+  $("logoPng").style.opacity = seg(t, 1.0, 1.4);
+  $("logoSvg").style.opacity = t < 1.45 ? 1 : 0;
+
+  const ti = seg(t, 2.2, 2.9, eOut), to = seg(t, OUT-.1, OUT+.3);
+  place(title, 640, 180, 420 + 40*(1-ti), 330, "", ti*(1-to));
+
+  /* laptop */
+  const li = seg(t, 1.8, 3.0, eOut);
+  let LX = 540, LY = 900, LS = 1;
+  const swap = seg(t, 10.0, 11.0), fin = seg(t, 16.0, 17.0);
+  // contact: laptop comes back to center stage, phone tucks in front-right
+  const ct = seg(t, 17.3, 18.3);
+  LX += 22*swap - 22*fin; LY -= 70*fin; LS -= .08*fin;
+  LY += 40*ct; LS += .1*ct;
+  const lout = seg(t, OUT, OUT+.9, eIn);
+  const ly2 = LY + (1-li)*1100 + Math.sin(t*1.1)*7 + lout*1500;
+  const lry = Math.sin(t*.4)*5 + (swap-fin)*-4;
+  place(lap, 1010, 602, LX, ly2, `rotateX(${lerp(38, 6, li)}deg) rotateY(${lry}deg) scale(${LS})`, li);
+  place($("lapShadow"), 900, 120, LX, ly2 + 330*LS, `scaleX(${LS})`, li*(1-lout)*.9);
+
+  /* phone */
+  const pi = seg(t, 2.3, 3.5, eBack);
+  let PX = lerp(1450, 840, pi), PY = 1335, PR = lerp(28, -7, pi), PS = 1;
+  PX = lerp(PX, 240, swap); PR = lerp(PR, 7, swap); PY += Math.sin(swap*Math.PI)*-90;
+  PX = lerp(PX, 540, fin); PR = lerp(PR, 0, fin); PY = lerp(PY, 1300, fin); PS = lerp(1, 1.14, fin);
+  PX = lerp(PX, 850, ct); PY = lerp(PY, 1390, ct); PR = lerp(PR, -6, ct); PS = lerp(PS, 1.02, ct);
+  const pout = seg(t, OUT+.1, OUT+1.0, eIn);
+  const py2 = PY + Math.sin(t*1.3+1)*10 + pout*1500;
+  PR += Math.sin(t*.9)*1.5 + pout*12;
+  place(phone, 300, 626, PX, py2, `rotate(${PR}deg) scale(${PS})`, clamp(pi*1.4));
+  place($("phShadow"), 340, 70, PX, py2 + 330*PS, `scale(${PS})`, clamp(pi)*(1-pout)*.8);
+
+  /* Sperber outro text */
+  const oi = seg(t, OUT+1.0, OUT+1.7, eOut), pl = seg(t, OUT+1.5, OUT+2.1, eBack);
+  place($("outro"), 1080, 330, 540, 1180 + 40*(1-oi), "", oi);
+  $("pill").style.transform = `scale(${pl})`; $("pill").style.opacity = clamp(pl);
+
+  /* credit card: paper circle wipe, then the yagoda mark draws itself */
+  const wipe = seg(t, CREDIT, CREDIT + .9, eIO);
+  $("paper").style.clipPath = `circle(${wipe*1250}px at 50% 52%)`;
+  const lblI = seg(t, CREDIT+.7, CREDIT+1.2, eOut);
+  $("creditLbl").style.opacity = .75*lblI;
+  $("creditLbl").style.transform = `translateY(${16*(1-lblI)}px)`;
+  strokes.forEach((p,k) => { const q = seg(t, CREDIT+.85 + k*.11, CREDIT+1.45 + k*.11, eOut); p.style.strokeDasharray = 1; p.style.strokeDashoffset = 1-q; p.style.opacity = q > 0 ? 1 : 0; });
+  const order = [0,1,4,3,2]; // a, g, o last
+  fills.forEach((f,k) => {
+    const st = CREDIT + 1.9 + order.indexOf(k)*.12;
+    const q = eBack(clamp((t - st)/.45));
+    const [cx,cy] = f.dataset.c.split(" ").map(Number);
+    f.setAttribute("transform", `translate(${cx} ${cy}) scale(${q}) translate(${-cx} ${-cy})`);
+  });
+  const settle = seg(t, CREDIT+2.6, CREDIT+3.4, eOut);
+  place($("credit"), 1080, 420, 540, 940 - 10*settle + Math.sin(Math.max(0,t-CREDIT-2.6)*1.4)*4*settle, `scale(${.94 + .06*seg(t, CREDIT+.8, CREDIT+2.4, eOut)})`, t >= CREDIT+.6 ? 1 : 0);
+
+  renderScreen(desk, t);
+  renderScreen(mob, t - .25);
+}
+
+window.render = render;
+window.DUR = DUR;
+Promise.all([loadAll(), document.fonts.ready]).then(() => { render(0); window.__ready = true; });
+if (location.search.includes("play")){
+  const t0 = performance.now();
+  const loop = () => { if (window.__ready) render(((performance.now()-t0)/1000) % DUR); requestAnimationFrame(loop); };
+  requestAnimationFrame(loop);
+}
+</script>
+</body>
+</html>

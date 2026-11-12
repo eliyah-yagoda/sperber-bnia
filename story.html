@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>סטורי מותג שפרבר</title>
+<style>
+@font-face{font-family:"Days";src:url(fonts/Days-Regular.woff2) format("woff2");font-weight:400}
+@font-face{font-family:"Days";src:url(fonts/Days-Bold.woff2) format("woff2");font-weight:700}
+@font-face{font-family:"Polin";src:url(fonts/Polin-Regular.woff2) format("woff2");font-weight:400}
+:root{--pink:#F49CC4;--navy:#12475C;--yellow:#D6CC3A;--orange:#D3833A;--ink:#08202C;--ink2:#0F2E3D;--paper:#F7F3EC}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--ink);color:var(--paper);font-family:"Polin",sans-serif}
+.story{position:relative;width:1080px;height:1920px;overflow:hidden;padding:200px 64px 0}
+
+/* background deco */
+.deco-c{position:absolute;width:760px;height:760px;border-radius:50%;border:2px solid rgba(244,156,196,.18);left:-380px;top:-300px}
+.deco-c2{position:absolute;width:520px;height:520px;border-radius:50%;background:rgba(244,156,196,.06);right:-260px;bottom:120px}
+.top-bar{position:absolute;top:0;right:0;left:0;height:14px;background:linear-gradient(90deg,var(--yellow) 0 70%,var(--orange) 70%)}
+
+/* header */
+header{display:flex;align-items:center;justify-content:space-between;height:150px}
+header img{height:150px;width:auto}
+.ttl{text-align:left;direction:rtl}
+.ttl .eb{display:flex;align-items:center;gap:12px;justify-content:flex-end;font-family:"Days";font-size:24px;letter-spacing:.14em;color:var(--pink)}
+.ttl .eb i{width:16px;height:16px;border-radius:50%;background:var(--pink)}
+.ttl h1{font-family:"Days";font-weight:700;font-size:78px;line-height:1;margin-top:8px}
+.ttl h1 em{font-style:normal;color:var(--yellow)}
+
+h2{display:flex;align-items:center;gap:14px;font-family:"Days";font-size:26px;letter-spacing:.12em;color:rgba(247,243,236,.65);margin:0 0 20px;font-weight:400}
+h2::after{content:"";flex:1;height:1px;background:rgba(247,243,236,.16)}
+
+/* values */
+.values{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:44px}
+.val{background:var(--ink2);padding:26px 20px 24px;display:flex;flex-direction:column;gap:12px;border-radius:26px 0}
+.val svg{width:84px;height:84px}
+.val b{font-family:"Days";font-weight:700;font-size:31px;line-height:1.05}
+.val span{font-size:19px;line-height:1.4;opacity:.72}
+
+/* colors */
+.colors{margin-top:40px}
+.chips{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+.chip{height:170px;padding:16px 14px;display:flex;flex-direction:column;justify-content:space-between;border-radius:22px 0}
+.chip b{font-family:"Days";font-weight:700;font-size:24px;line-height:1}
+.chip span{font-family:"Days";font-size:17px;direction:ltr;text-align:right;letter-spacing:.04em;opacity:.85}
+
+/* mockups */
+.mocks{margin-top:40px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.mk{height:300px;position:relative;overflow:hidden;border-radius:28px 0;display:grid;place-items:center}
+.mk svg{width:100%;height:100%}
+.mk .cap{position:absolute;bottom:16px;right:18px;font-family:"Days";font-size:19px;letter-spacing:.06em;padding:6px 14px;border-radius:12px 0;background:rgba(8,32,44,.75);color:var(--paper)}
+
+footer{position:absolute;right:64px;left:64px;top:1702px;display:flex;align-items:center;justify-content:space-between}
+footer b{font-family:"Days";font-weight:700;font-size:44px}
+footer b em{font-style:normal;color:var(--yellow)}
+footer .bar{width:230px;height:16px;background:linear-gradient(270deg,var(--orange) 0 34%,var(--yellow) 34%)}
+</style>
+</head>
+<body>
+<div class="story">
+  <div class="top-bar"></div>
+  <div class="deco-c"></div><div class="deco-c2"></div>
+
+  <header>
+    <img src="brand/logo-light.png" alt="שפרבר">
+    <div class="ttl">
+      <div class="eb">ספר מותג<i></i></div>
+      <h1>שלוש צורות.<br><em>סימן אחד.</em></h1>
+    </div>
+  </header>
+
+  <section class="values">
+    <div class="val">
+      <svg viewBox="0 0 84 84"><circle cx="42" cy="42" r="38" fill="#F49CC4"/></svg>
+      <b>בית<br>וקהילה</b><span>בונים מקום לחיות בו</span>
+    </div>
+    <div class="val">
+      <svg viewBox="0 0 84 84"><polygon points="14,4 80,42 14,80" fill="#1C5A73"/></svg>
+      <b>כיוון<br>וחדשנות</b><span>תכנון שרואה קדימה</span>
+    </div>
+    <div class="val">
+      <svg viewBox="0 0 84 84"><rect x="2" y="32" width="80" height="20" fill="#D6CC3A"/></svg>
+      <b>יסודות<br>ויציבות</b><span>הנדסה שמחזיקה לדורות</span>
+    </div>
+    <div class="val">
+      <svg viewBox="0 0 84 84"><defs><clipPath id="oc"><circle cx="34" cy="42" r="30"/></clipPath></defs><circle cx="34" cy="42" r="30" fill="#F49CC4"/><rect x="24" y="34" width="58" height="17" fill="#D6CC3A"/><rect x="24" y="34" width="58" height="17" fill="#D3833A" clip-path="url(#oc)"/></svg>
+      <b>שותפות</b><span>כולם בצוות אחד</span>
+    </div>
+  </section>
+
+  <section class="colors">
+    <h2>הצבעים</h2>
+    <div class="chips">
+      <div class="chip" style="background:#F49CC4;color:#08202C"><b>ורוד<br>בית</b><span>#F49CC4</span></div>
+      <div class="chip" style="background:#12475C"><b>כחול<br>כיוון</b><span>#12475C</span></div>
+      <div class="chip" style="background:#D6CC3A;color:#08202C"><b>צהוב<br>יסוד</b><span>#D6CC3A</span></div>
+      <div class="chip" style="background:#D3833A;color:#08202C"><b>כתום<br>שותפות</b><span>#D3833A</span></div>
+      <div class="chip" style="background:#08202C;box-shadow:inset 0 0 0 2px rgba(247,243,236,.2)"><b>דיו</b><span>#08202C</span></div>
+      <div class="chip" style="background:#F7F3EC;color:#08202C"><b>נייר</b><span>#F7F3EC</span></div>
+    </div>
+  </section>
+
+  <section class="mocks">
+    <h2>המותג בשימוש</h2>
+    <div class="grid">
+
+      <!-- Mug -->
+      <div class="mk" style="background:#F49CC4">
+        <svg viewBox="0 0 470 340" aria-hidden="true">
+          <defs>
+            <linearGradient id="mug" x1="0" x2="1"><stop offset="0" stop-color="#d9d3c8"/><stop offset=".22" stop-color="#fbf8f2"/><stop offset=".6" stop-color="#f3eee5"/><stop offset="1" stop-color="#c9c2b5"/></linearGradient>
+          </defs>
+          <ellipse cx="225" cy="292" rx="120" ry="16" fill="#08202C" opacity=".22"/>
+          <path d="M290 120 C360 118 362 236 290 232" stroke="#e7e1d6" stroke-width="22" fill="none"/>
+          <path d="M290 120 C360 118 362 236 290 232" stroke="#c9c2b5" stroke-width="6" fill="none" opacity=".6"/>
+          <path d="M140 78 L140 262 Q140 290 168 290 L282 290 Q310 290 310 262 L310 78 Z" fill="url(#mug)"/>
+          <ellipse cx="225" cy="78" rx="85" ry="17" fill="#ede7dc"/>
+          <ellipse cx="225" cy="80" rx="75" ry="12" fill="#3b2418"/>
+          <image href="brand/logo-dark.png" x="180" y="128" width="90" height="92"/>
+        </svg>
+        <span class="cap">כוס</span>
+      </div>
+
+      <!-- Notebook -->
+      <div class="mk" style="background:#D6CC3A">
+        <svg viewBox="0 0 470 340" aria-hidden="true">
+          <g transform="rotate(10 250 170)">
+            <rect x="170" y="50" width="190" height="250" rx="10" fill="#F7F3EC"/>
+            <rect x="178" y="58" width="174" height="234" rx="6" fill="none" stroke="#e2dbcd" stroke-width="2"/>
+          </g>
+          <g transform="rotate(-8 210 170)">
+            <rect x="122" y="42" width="196" height="258" rx="10" fill="#06171f" opacity=".25" transform="translate(8 10)"/>
+            <rect x="122" y="42" width="196" height="258" rx="10" fill="#08202C"/>
+            <rect x="122" y="42" width="18" height="258" rx="4" fill="#0F2E3D"/>
+            <rect x="282" y="42" width="12" height="258" fill="#F49CC4"/>
+            <image href="brand/logo-light.png" x="168" y="120" width="88" height="90"/>
+            <rect x="140" y="268" width="142" height="10" fill="#D6CC3A"/>
+            <rect x="140" y="268" width="48" height="10" fill="#D3833A"/>
+          </g>
+        </svg>
+        <span class="cap">מחברת</span>
+      </div>
+
+      <!-- Tote -->
+      <div class="mk" style="background:#12475C">
+        <svg viewBox="0 0 470 340" aria-hidden="true">
+          <defs><clipPath id="bag"><path d="M140 110 L330 110 L344 312 L126 312 Z"/></clipPath></defs>
+          <ellipse cx="235" cy="318" rx="120" ry="12" fill="#000" opacity=".22"/>
+          <path d="M180 112 C180 40 290 40 290 112" stroke="#e6dfd1" stroke-width="12" fill="none"/>
+          <path d="M140 110 L330 110 L344 312 L126 312 Z" fill="#F1EBDF"/>
+          <g clip-path="url(#bag)">
+            <circle cx="196" cy="226" r="78" fill="#F49CC4"/>
+            <polygon points="242,138 318,182 242,226" fill="#1C5A73"/>
+            <rect x="166" y="244" width="200" height="30" fill="#D6CC3A"/>
+            <clipPath id="bagc"><circle cx="196" cy="226" r="78"/></clipPath>
+            <g clip-path="url(#bagc)"><polygon points="242,138 318,182 242,226" fill="#2B3A62"/><rect x="166" y="244" width="200" height="30" fill="#D3833A"/></g>
+            <rect x="126" y="110" width="218" height="10" fill="#000" opacity=".06"/>
+          </g>
+          <path d="M142 112 L126 312" stroke="#d8d0c0" stroke-width="2"/>
+        </svg>
+        <span class="cap">תיק בד</span>
+      </div>
+
+      <!-- Bottle + cap -->
+      <div class="mk" style="background:#F7F3EC">
+        <svg viewBox="0 0 470 340" aria-hidden="true">
+          <defs>
+            <linearGradient id="btl" x1="0" x2="1"><stop offset="0" stop-color="#05161e"/><stop offset=".3" stop-color="#1a3f52"/><stop offset=".55" stop-color="#0d2a38"/><stop offset="1" stop-color="#04121a"/></linearGradient>
+            <linearGradient id="cap" x1="0" x2="1"><stop offset="0" stop-color="#b9b03a"/><stop offset=".35" stop-color="#e6dd5c"/><stop offset="1" stop-color="#a89f2c"/></linearGradient>
+          </defs>
+          <ellipse cx="200" cy="314" rx="70" ry="10" fill="#000" opacity=".15"/>
+          <rect x="164" y="28" width="72" height="44" rx="10" fill="url(#cap)"/>
+          <rect x="146" y="68" width="108" height="244" rx="34" fill="url(#btl)"/>
+          <image href="brand/logo-light.png" x="160" y="150" width="80" height="82"/>
+          <!-- pen -->
+          <g transform="translate(10 -34) rotate(-24 340 190)">
+            <rect x="320" y="70" width="22" height="230" rx="10" fill="#F49CC4"/>
+            <rect x="320" y="70" width="22" height="46" rx="10" fill="#12475C"/>
+            <rect x="337" y="96" width="6" height="70" rx="3" fill="#0F2E3D"/>
+            <polygon points="320,296 342,296 331,322" fill="#e2dbcd"/>
+          </g>
+        </svg>
+        <span class="cap">בקבוק ועט</span>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+    <b>מהקרקע <em>ועד המפתח</em></b>
+    <div class="bar"></div>
+  </footer>
+</div>
+</body>
+</html>

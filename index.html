@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>שפרבר בנייה | מהקרקע ועד המפתח</title>
+<meta name="description" content="שפרבר בנייה — יזמות, תכנון וביצוע פרויקטים למגורים. מהמגרש הריק ועד מסירת המפתח.">
+<link rel="icon" href="img/logo.png">
+<link rel="preload" href="img/hero.webp" as="image">
+<style>
+@font-face{font-family:"Days";src:url(fonts/Days-Regular.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Days";src:url(fonts/Days-Bold.woff2) format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"Polin";src:url(fonts/Polin-Regular.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Polin";src:url(fonts/Polin-Bold.woff2) format("woff2");font-weight:700;font-display:swap}
+
+:root{
+  --pink:#F49CC4; --navy:#12475C; --yellow:#D6CC3A; --orange:#D3833A;
+  --ink:#08202C; --ink-2:#0D2D3C; --paper:#F7F3EC;
+  --ease:cubic-bezier(.65,0,.35,1); --ease-out:cubic-bezier(.16,1,.3,1);
+  --gutter:clamp(20px,4vw,64px); --leaf:18px 0; --leaf-sm:12px 0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:var(--ink);color:var(--paper)}
+body{font-family:"Polin",system-ui,sans-serif;-webkit-font-smoothing:antialiased;overscroll-behavior:none;touch-action:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+a{color:inherit;text-decoration:none}
+
+/* ---------- stage ---------- */
+.stage{position:fixed;inset:0;width:100dvw;height:100dvh;overflow:hidden}
+#seq{position:absolute;inset:0;width:100%;height:100%;display:block;transition:filter .5s var(--ease),transform 1.2s var(--ease-out)}
+.stage.blinking #seq{filter:blur(6px) brightness(.7);transform:scale(1.025)}
+.shade{position:absolute;inset:0;pointer-events:none;
+  background:
+    linear-gradient(to bottom,rgba(8,32,44,.6) 0%,rgba(8,32,44,0) 22%),
+    linear-gradient(to top,rgba(8,32,44,.55) 0%,rgba(8,32,44,0) 30%);
+  transition:background-color .9s var(--ease)}
+.shade::before,.shade::after{content:"";position:absolute;inset:0;opacity:0;transition:opacity 1.1s var(--ease)}
+.shade::before{background:linear-gradient(to left,rgba(8,32,44,.82) 0%,rgba(8,32,44,.45) 32%,rgba(8,32,44,0) 62%)}
+.shade::after{background:linear-gradient(to right,rgba(8,32,44,.82) 0%,rgba(8,32,44,.45) 32%,rgba(8,32,44,0) 62%)}
+.stage[data-side="r"] .shade::before,.stage[data-side="l"] .shade::after{opacity:1}
+.stage[data-stage="5"] .shade{background-color:rgba(8,32,44,.62)}
+
+/* blink lids */
+.lid{position:absolute;left:0;right:0;height:50.5%;background:var(--ink);z-index:30;pointer-events:none;transform:scaleY(0)}
+.lid.top{top:0;transform-origin:top}
+.lid.bottom{bottom:0;transform-origin:bottom}
+.lid::after{content:"";position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--yellow),transparent);opacity:.8}
+.lid.top::after{bottom:0}.lid.bottom::after{top:0}
+
+/* ---------- header ---------- */
+header{position:fixed;top:0;right:0;left:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:clamp(16px,2.6vw,32px) var(--gutter)}
+.brand{display:block;height:clamp(52px,6vw,78px);aspect-ratio:774/791}
+.brand img{height:100%;width:auto;display:block}
+.head-actions{display:flex;align-items:center;gap:clamp(12px,2vw,28px)}
+.cta-mini{font-family:"Days";font-size:15px;letter-spacing:.02em;padding:11px 22px;border:1px solid rgba(247,243,236,.35);border-radius:var(--leaf);transition:background .35s,color .35s,border-color .35s;backdrop-filter:blur(8px);background:rgba(8,32,44,.2)}
+.cta-mini:hover{background:var(--yellow);color:var(--ink);border-color:var(--yellow)}
+.burger{width:46px;height:46px;border-radius:var(--leaf-sm);display:grid;place-items:center;background:rgba(8,32,44,.35);backdrop-filter:blur(8px);border:1px solid rgba(247,243,236,.2)}
+.burger span{display:block;width:18px;height:2px;background:var(--paper);position:relative;transition:transform .4s var(--ease)}
+.burger span::before,.burger span::after{content:"";position:absolute;right:0;height:2px;background:var(--paper);transition:transform .4s var(--ease),width .4s var(--ease)}
+.burger span::before{top:-6px;width:18px}.burger span::after{top:6px;width:11px;background:var(--yellow)}
+body.menu-open .burger span{background:transparent}
+body.menu-open .burger span::before{transform:translateY(6px) rotate(45deg)}
+body.menu-open .burger span::after{transform:translateY(-6px) rotate(-45deg);width:18px}
+
+/* ---------- side rail (stage nav) ---------- */
+.rail{position:fixed;left:var(--gutter);top:50%;transform:translateY(-50%);z-index:20;display:flex;flex-direction:column;gap:6px;transition:opacity .4s var(--ease)}
+body.busy .rail{opacity:0;pointer-events:none}
+body[data-side="l"] .rail{left:auto;right:var(--gutter)}
+body[data-side="l"] .rail button{flex-direction:row}
+body[data-side="l"] .rail .num{text-align:right}
+.rail button{display:flex;align-items:center;gap:14px;padding:8px 0;flex-direction:row-reverse;opacity:.55;transition:opacity .4s}
+.rail button:hover,.rail button.on{opacity:1}
+.rail .tick{width:18px;height:3px;background:var(--paper);transition:width .6s var(--ease-out),background .4s}
+.rail button.on .tick{width:46px;background:var(--yellow)}
+.rail .lbl{font-family:"Days";font-size:13px;letter-spacing:.04em;white-space:nowrap;transform:translateX(-6px);opacity:0;transition:.45s var(--ease-out)}
+.rail button:hover .lbl,.rail button.on .lbl{opacity:1;transform:none}
+.rail .num{font-family:"Days";font-size:11px;opacity:.7;width:18px;text-align:left}
+
+/* ---------- panels ---------- */
+.panels{position:absolute;inset:0;z-index:10;pointer-events:none}
+.panel{position:absolute;right:var(--gutter);top:50%;transform:translateY(-46%);width:min(560px,46vw);pointer-events:none}
+.panel.on{pointer-events:auto}
+.panel.side-l{right:auto;left:var(--gutter)}
+.eyebrow{display:flex;align-items:center;gap:12px;font-family:"Days";font-size:14px;letter-spacing:.14em;color:var(--pink);margin-bottom:22px}
+.eyebrow .dot{width:12px;height:12px;border-radius:50%;background:var(--pink);flex:none}
+.eyebrow .idx{color:var(--paper);opacity:.6;letter-spacing:.06em}
+.panel h1,.panel h2{font-family:"Days";font-weight:700;font-size:clamp(40px,5.4vw,86px);line-height:.98;letter-spacing:-.01em;text-wrap:balance}
+.panel h1 em,.panel h2 em{font-style:normal;color:var(--yellow)}
+.bar{display:block;height:10px;width:min(220px,40%);background:var(--yellow);margin:28px 0 26px;transform-origin:right;mix-blend-mode:normal;position:relative}
+.bar::before{content:"";position:absolute;right:0;top:0;bottom:0;width:34%;background:var(--orange)}
+.panel p{font-size:clamp(16px,1.25vw,20px);line-height:1.65;max-width:44ch;color:rgba(247,243,236,.88)}
+.facts{display:flex;gap:clamp(20px,3vw,44px);margin-top:34px}
+.facts b{display:block;font-family:"Days";font-size:clamp(26px,2.4vw,38px);color:var(--paper);line-height:1}
+.facts span{font-size:13px;opacity:.7;margin-top:6px;display:block}
+
+/* split reveal per line */
+.panel [data-r]{opacity:0;transform:translateY(28px);filter:blur(8px);transition:opacity .7s var(--ease-out),transform .9s var(--ease-out),filter .7s var(--ease-out)}
+.panel .bar[data-r]{transform:scaleX(0);filter:none;transition:transform 1s var(--ease-out),opacity .3s}
+.panel.on [data-r]{opacity:1;transform:none;filter:none}
+.panel.on [data-r="1"]{transition-delay:.05s}.panel.on [data-r="2"]{transition-delay:.15s}
+.panel.on [data-r="3"]{transition-delay:.32s}.panel.on [data-r="4"]{transition-delay:.42s}.panel.on [data-r="5"]{transition-delay:.54s}
+.panel.out [data-r]{opacity:0;transform:translateY(-18px);filter:blur(6px);transition-duration:.45s;transition-delay:0s!important}
+.panel.out .bar[data-r]{transform:scaleX(0);transform-origin:left}
+
+/* contact panel */
+.panel.contact{right:auto;left:50%;top:50%;transform:translate(-50%,-50%);width:min(600px,calc(100vw - 2 * var(--gutter)));text-align:center}
+.panel.contact .eyebrow{justify-content:center}
+.panel.contact .bar{margin-inline:auto}
+.panel.contact .bar,.panel.contact.out .bar[data-r]{transform-origin:center}
+.panel.contact p{margin-inline:auto}
+form{display:grid;grid-template-columns:1fr;gap:12px;margin-top:30px;text-align:right}
+form .row{display:grid;grid-template-columns:118px 1fr;align-items:center;gap:18px}
+form .row span{font-family:"Days";font-size:16px;color:rgba(247,243,236,.85);text-align:right}
+.send{margin-top:8px}
+input,select{width:100%;font:inherit;font-size:16px;color:var(--paper);background:rgba(247,243,236,.08);border:1px solid rgba(247,243,236,.22);border-radius:var(--leaf-sm);padding:14px 18px;text-align:right;direction:rtl;outline:none;transition:border-color .3s,background .3s;backdrop-filter:blur(10px)}
+input::placeholder{color:rgba(247,243,236,.55)}
+input:focus,select:focus{border-color:var(--yellow);background:rgba(247,243,236,.12)}
+select option{color:var(--ink)}
+.send{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;font-family:"Days";font-size:18px;background:var(--yellow);color:var(--ink);border-radius:var(--leaf);padding:16px 24px;transition:background .3s,transform .3s}
+.send:hover{background:var(--pink)}
+.send svg{transition:transform .4s var(--ease-out)}
+.send:hover svg{transform:translateX(-6px)}
+.thanks{display:none;margin-top:28px;font-family:"Days";font-size:22px;color:var(--yellow)}
+form.sent{display:none}form.sent+.thanks{display:block}
+
+/* ---------- scroll cue ---------- */
+.cue{position:fixed;bottom:clamp(22px,4vh,40px);right:50%;transform:translateX(50%);z-index:20;display:flex;flex-direction:column;align-items:center;gap:10px;font-family:"Days";font-size:12px;letter-spacing:.18em;opacity:.9;transition:opacity .5s}
+.cue svg{animation:nudge 2.2s var(--ease) infinite}
+body.busy .cue,body.end .cue{opacity:0}
+@keyframes nudge{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+
+/* progress */
+.progress{position:fixed;left:0;right:0;bottom:0;height:3px;z-index:21;background:rgba(247,243,236,.08)}
+.progress i{position:absolute;right:0;top:0;bottom:0;width:0;background:var(--yellow);transition:width .6s var(--ease-out)}
+.progress i::before{content:"";position:absolute;right:0;top:0;bottom:0;width:22%;background:var(--pink)}
+
+/* decorative logo shapes */
+.deco{position:absolute;z-index:5;pointer-events:none;transition:transform 1.6s var(--ease-out),opacity 1.2s var(--ease)}
+.deco.circle{width:clamp(300px,34vw,560px);aspect-ratio:1;border-radius:50%;border:1px solid rgba(244,156,196,.35);right:calc(var(--gutter) * -1 - 8vw);top:12vh}
+.deco.tri{width:clamp(60px,6vw,96px);aspect-ratio:1;left:calc(var(--gutter) + 90px);bottom:14vh;opacity:.0}
+.stage[data-stage="1"] .deco.circle{transform:translate(-72vw,6vh) scale(.92)}
+.stage[data-stage="2"] .deco.circle{transform:translate(-1vw,-4vh) scale(1.08)}
+.stage[data-stage="3"] .deco.circle{transform:translate(-70vw,10vh) scale(.85)}
+.stage[data-stage="4"] .deco.circle{transform:translate(0,-2vh) scale(1.15)}
+.stage[data-stage="5"] .deco.circle{transform:translate(-36vw,-2vh) scale(1.5);opacity:.5}
+
+/* ---------- full menu ---------- */
+.menu{position:fixed;inset:0;z-index:19;background:var(--ink);display:grid;grid-template-columns:1.2fr 1fr;clip-path:circle(0% at 4% 6%);transition:clip-path .9s var(--ease);overflow:hidden}
+body.menu-open .menu{clip-path:circle(150% at 4% 6%)}
+.menu nav{display:flex;flex-direction:column;justify-content:center;padding:120px var(--gutter) 60px;gap:4px}
+.menu nav button{display:flex;align-items:baseline;gap:22px;text-align:right;font-family:"Days";font-weight:700;font-size:clamp(34px,5vw,72px);line-height:1.15;opacity:0;transform:translateY(30px);transition:opacity .6s,transform .8s var(--ease-out),color .3s}
+.menu nav button small{font-size:14px;font-weight:400;color:var(--pink);letter-spacing:.1em;width:28px}
+.menu nav button:hover,.menu nav button.on{color:var(--yellow)}
+body.menu-open .menu nav button{opacity:1;transform:none}
+.menu nav button:nth-child(1){transition-delay:.2s}.menu nav button:nth-child(2){transition-delay:.26s}.menu nav button:nth-child(3){transition-delay:.32s}
+.menu nav button:nth-child(4){transition-delay:.38s}.menu nav button:nth-child(5){transition-delay:.44s}.menu nav button:nth-child(6){transition-delay:.5s}
+.menu .art{position:relative;background:var(--ink-2);display:grid;place-items:center;overflow:hidden}
+.menu .art svg{width:min(70%,460px);height:auto}
+.menu .art p{position:absolute;bottom:40px;right:40px;left:40px;font-size:15px;line-height:1.7;opacity:.7}
+
+/* ---------- loader ---------- */
+.loader{position:fixed;inset:0;z-index:50;background:var(--ink);display:grid;place-items:center;transition:opacity .9s var(--ease),visibility .9s}
+.loader.done{opacity:0;visibility:hidden}
+.loader-in{display:flex;flex-direction:column;align-items:center;gap:28px}
+.loader svg{width:140px;height:auto;overflow:visible}
+.loader .c{transform-origin:28% 32%;animation:pop 1s var(--ease-out) both}
+.loader .t{animation:slide 1s .2s var(--ease-out) both}
+.loader .b{transform-origin:right;animation:wipe 1s .35s var(--ease-out) both}
+.loader .o{animation:fadeo .5s .9s both}@keyframes fadeo{from{opacity:0}}
+@keyframes pop{from{transform:scale(0)}}
+@keyframes slide{from{transform:translateX(-30px);opacity:0}}
+@keyframes wipe{from{transform:scaleX(0)}}
+.loader .pct{font-family:"Days";font-size:13px;letter-spacing:.2em;opacity:.7;min-width:6ch;text-align:center}
+.loader .line{width:160px;height:2px;background:rgba(247,243,236,.12);position:relative;overflow:hidden}
+.loader .line i{position:absolute;right:0;top:0;bottom:0;width:0;background:var(--yellow);transition:width .3s}
+
+/* ---------- responsive ---------- */
+@media (max-width:820px){
+  .rail{display:none}
+  .cta-mini{display:none}
+  .shade{background:
+    linear-gradient(to bottom,rgba(8,32,44,.65) 0%,rgba(8,32,44,0) 20%),
+    linear-gradient(to top,rgba(8,32,44,.92) 0%,rgba(8,32,44,.6) 38%,rgba(8,32,44,0) 66%)}
+  .panel,.panel.side-l,.panel.contact{top:auto;bottom:calc(64px + env(safe-area-inset-bottom));transform:none;width:auto;left:var(--gutter);right:var(--gutter)}
+  .panel.contact{top:50%;bottom:auto;transform:translateY(-46%)}
+  form .row{grid-template-columns:86px 1fr;gap:12px}
+  form .row span{font-size:14px}
+  .panel h1,.panel h2{font-size:clamp(34px,10vw,52px)}
+  .bar{height:8px;margin:18px 0 16px}
+  .panel p{font-size:15.5px}
+  .facts{margin-top:20px}
+  .eyebrow{margin-bottom:14px;font-size:12px}
+  .cue{bottom:18px}
+  .cue span{display:none}
+  form{gap:9px;margin-top:18px}
+  input,select{padding:13px 15px}
+  .panel.contact p{display:none}
+  .menu{grid-template-columns:1fr}
+  .menu .art{display:none}
+  .deco.circle{right:-40vw;top:8vh;width:80vw}
+}
+@media (max-height:620px) and (min-width:821px){.facts{display:none}.panel p{font-size:15px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body data-side="r">
+
+<div class="loader" id="loader">
+  <div class="loader-in">
+    <svg viewBox="0 0 774 440" aria-hidden="true">
+      <circle class="c" cx="214" cy="257" r="214" fill="#F49CC4"/>
+      <defs><clipPath id="lc"><circle cx="214" cy="257" r="214"/></clipPath></defs><polygon class="t" points="364,0 618,148 364,293" fill="#1C5A73"/>
+      <rect class="b" x="166" y="344" width="608" height="86" fill="#D6CC3A"/><g class="o" clip-path="url(#lc)"><polygon points="364,0 618,148 364,293" fill="#2B3A62"/><rect x="166" y="344" width="608" height="86" fill="#D3833A"/></g>
+    </svg>
+    <div class="line"><i id="loadLine"></i></div>
+    <div class="pct" id="loadPct">0%</div>
+  </div>
+</div>
+
+<main class="stage" id="stage" data-stage="0" data-side="r">
+  <canvas id="seq" aria-hidden="true"></canvas>
+  <div class="shade"></div>
+  <div class="deco circle"></div>
+
+  <section class="panels" aria-live="polite">
+    <article class="panel on" data-panel="0">
+      <div class="eyebrow" data-r="1"><span class="dot"></span>שפרבר בנייה <span class="idx">· 01 / הקרקע</span></div>
+      <h1 data-r="2">כל בניין גדול<br>מתחיל <em>במגרש ריק</em></h1>
+      <span class="bar" data-r="3"></span>
+      <p data-r="4">אנחנו רואים את מה שעוד לא קיים. יזמות, תכנון וביצוע של פרויקטים למגורים — מהקרקע ועד מסירת המפתח.</p>
+    </article>
+
+    <article class="panel side-l" data-panel="1">
+      <div class="eyebrow" data-r="1"><span class="dot"></span>תכנון <span class="idx">· 02</span></div>
+      <h2 data-r="2">תכנון שרואה<br><em>את העתיד</em></h2>
+      <span class="bar" data-r="3"></span>
+      <p data-r="4">מהנדסים, אדריכלים ומנהלי פרויקט עובדים כצוות אחד. כל החלטה נבחנת על המגרש, עוד לפני שנוצק הבטון הראשון.</p>
+    </article>
+
+    <article class="panel" data-panel="2">
+      <div class="eyebrow" data-r="1"><span class="dot"></span>הדמיה <span class="idx">· 03</span></div>
+      <h2 data-r="2">החזון מקבל<br><em>ממדים</em></h2>
+      <span class="bar" data-r="3"></span>
+      <p data-r="4">מודל דיגיטלי מלא בקנה מידה אמיתי. כל קומה, כל מרפסת וכל פרט נבדקים מראש, כדי שבשטח לא יהיו הפתעות.</p>
+    </article>
+
+    <article class="panel side-l" data-panel="3">
+      <div class="eyebrow" data-r="1"><span class="dot"></span>ביצוע <span class="idx">· 04</span></div>
+      <h2 data-r="2">שלד חזק.<br><em>יסודות לדורות.</em></h2>
+      <span class="bar" data-r="3"></span>
+      <p data-r="4">ביצוע לפי תקני הבטיחות והאיכות המחמירים, פיקוח צמוד בכל שלב ולוחות זמנים שעומדים בהם.</p>
+    </article>
+
+    <article class="panel" data-panel="4">
+      <div class="eyebrow" data-r="1"><span class="dot"></span>מסירה <span class="idx">· 05</span></div>
+      <h2 data-r="2">ברוכים הבאים<br><em>הביתה</em></h2>
+      <span class="bar" data-r="3"></span>
+      <p data-r="4">אדריכלות עכשווית, חומרים איכותיים וגימור מוקפד. בניין שמוסיף ערך לדיירים ולשכונה כולה.</p>
+      <div class="facts" data-r="5">
+        <div><b>מהקרקע</b><span>איתור ויזמות</span></div>
+        <div><b>לתכנון</b><span>הנדסה והדמיה</span></div>
+        <div><b>למפתח</b><span>ביצוע ומסירה</span></div>
+      </div>
+    </article>
+
+    <article class="panel contact" data-panel="5">
+      <div class="eyebrow" data-r="1"><span class="dot"></span>בואו נדבר <span class="idx">· 06</span></div>
+      <h2 data-r="2">הפרויקט הבא<br>שלכם <em>מתחיל כאן</em></h2>
+      <span class="bar" data-r="3"></span>
+      <p data-r="4">יש לכם קרקע, רעיון או פרויקט בדרך? השאירו פרטים ונחזור אליכם.</p>
+      <form id="lead" data-r="5" novalidate>
+        <label class="row"><span>שם מלא</span><input name="name" autocomplete="name" required></label>
+        <label class="row"><span>טלפון</span><input name="phone" type="tel" autocomplete="tel" required></label>
+        <label class="row"><span>אימייל</span><input name="email" type="email" autocomplete="email"></label>
+        <label class="row"><span>סוג פרויקט</span>
+          <select name="type">
+            <option value="" selected disabled>בחרו</option>
+            <option>בנייה למגורים</option><option>התחדשות עירונית</option><option>יזמות על קרקע</option><option>אחר</option>
+          </select>
+        </label>
+        <button class="send" type="submit">שליחה
+          <svg width="22" height="14" viewBox="0 0 22 14" fill="none"><path d="M21 7H2M7 1 1 7l6 6" stroke="currentColor" stroke-width="2"/></svg>
+        </button>
+      </form>
+      <div class="thanks">תודה! נחזור אליכם בקרוב.</div>
+    </article>
+  </section>
+
+  <div class="lid top"></div><div class="lid bottom"></div>
+</main>
+
+<header>
+  <a class="brand" href="#" data-go="0" aria-label="שפרבר — לראש העמוד"><img src="img/logo.png" alt="שפרבר"></a>
+  <div class="head-actions">
+    <button class="cta-mini" data-go="5">צרו קשר</button>
+    <button class="burger" id="burger" aria-label="תפריט" aria-expanded="false"><span></span></button>
+  </div>
+</header>
+
+<nav class="rail" id="rail" aria-label="שלבים"></nav>
+
+<div class="menu" id="menu" aria-hidden="true">
+  <nav id="menuNav"></nav>
+  <div class="art">
+    <svg viewBox="0 0 774 440" aria-hidden="true">
+      <circle cx="214" cy="257" r="214" fill="#F49CC4"/>
+      <defs><clipPath id="mc"><circle cx="214" cy="257" r="214"/></clipPath></defs><polygon points="364,0 618,148 364,293" fill="#1C5A73"/>
+      <rect x="166" y="344" width="608" height="86" fill="#D6CC3A"/><g clip-path="url(#mc)"><polygon points="364,0 618,148 364,293" fill="#2B3A62"/><rect x="166" y="344" width="608" height="86" fill="#D3833A"/></g>
+    </svg>
+    <p>שפרבר בנייה — יזמות, תכנון וביצוע פרויקטים למגורים. מהמגרש הריק ועד הבית.</p>
+  </div>
+</div>
+
+<div class="cue" id="cue"><span>גללו</span>
+  <svg width="18" height="16" viewBox="0 0 18 16"><polygon points="0,0 18,0 9,15.6" fill="#F49CC4"/></svg>
+</div>
+<div class="progress"><i id="prog"></i></div>
+
+<script>
+(() => {
+  const SEGS = ["2","3","4","5"], N = 145, PLAY_MS = 3400;
+  const STAGES = ["הקרקע","תכנון","הדמיה","שלד","מסירה","צור קשר"];
+  const LAST = STAGES.length - 1;
+  const pad = n => String(n).padStart(3,"0");
+  const src = (s,i) => `frames/${SEGS[s]}/${pad(i+1)}.webp`;
+
+  const stage = document.getElementById("stage");
+  const canvas = document.getElementById("seq"), ctx = canvas.getContext("2d");
+  const panels = [...document.querySelectorAll(".panel")];
+  const lids = document.querySelectorAll(".lid");
+  const prog = document.getElementById("prog");
+
+  /* ---- frames ---- */
+  const imgs = SEGS.map(() => new Array(N));
+  const loaded = SEGS.map(() => new Uint8Array(N));
+  const segCount = SEGS.map(() => 0);
+  const hero = new Image(); hero.src = "img/hero.webp";
+  let cur = { s:0, i:0 };
+
+  function load(s,i){
+    return new Promise(res => {
+      if (loaded[s][i]) return res();
+      const im = new Image(); im.decoding = "async"; im.src = src(s,i);
+      im.onload = () => { imgs[s][i] = im; loaded[s][i] = 1; segCount[s]++; res(); };
+      im.onerror = res;
+    });
+  }
+  async function loadSeg(s, onp){
+    let next = 0, done = 0;
+    const worker = async () => { while (next < N){ const i = next++; await load(s,i); done++; onp && onp(done/N); } };
+    await Promise.all(Array.from({length:8}, worker));
+  }
+  const segReady = s => segCount[s] >= N - 2;
+
+  /* ---- drawing ---- */
+  let W=0,H=0;
+  function resize(){
+    const dpr = Math.min(window.devicePixelRatio||1, 2);
+    W = canvas.clientWidth; H = canvas.clientHeight;
+    canvas.width = Math.round(W*dpr); canvas.height = Math.round(H*dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.imageSmoothingQuality = "high";
+    paint();
+  }
+  function nearest(s,i){
+    if (loaded[s][i]) return imgs[s][i];
+    for (let d=1; d<N; d++){ if (i-d>=0 && loaded[s][i-d]) return imgs[s][i-d]; if (i+d<N && loaded[s][i+d]) return imgs[s][i+d]; }
+    return null;
+  }
+  function drawImg(im){
+    if (!im || !im.naturalWidth) return;
+    const iw = im.naturalWidth, ih = im.naturalHeight;
+    const sc = Math.max(W/iw, H/ih), dw = iw*sc, dh = ih*sc;
+    const fx = W < H ? .6 : .5; // portrait: keep building in frame
+    ctx.drawImage(im, (W-dw)*fx, (H-dh)/2, dw, dh);
+  }
+  function paint(){ drawImg(nearest(cur.s,cur.i) || hero); }
+  function show(s,i){ cur = {s,i}; paint(); }
+  const restFrame = st => st <= 0 ? {s:0,i:0} : {s:Math.min(st,4)-1, i:N-1};
+
+  /* ---- state ---- */
+  let current = 0, busy = false, coolUntil = 0;
+  const setBusy = b => { busy = b; document.body.classList.toggle("busy", b); };
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+  const SIDES = ["r","l","r","l","r","c"];
+  function setStageUI(st){
+    stage.dataset.stage = st;
+    stage.dataset.side = document.body.dataset.side = SIDES[st];
+    document.body.classList.toggle("end", st === LAST);
+    document.querySelectorAll("[data-stage-btn]").forEach(b => b.classList.toggle("on", +b.dataset.stageBtn === st));
+    prog.style.width = (st/LAST*100) + "%";
+  }
+  function panelOut(st){ const p = panels[st]; p.classList.add("out"); p.classList.remove("on"); setTimeout(() => p.classList.remove("out"), 500); }
+  function panelIn(st){ panels.forEach((p,k) => { if (k!==st) p.classList.remove("on"); }); panels[st].classList.add("on"); }
+
+  const easeIO = t => t<.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2;
+
+  async function playSeg(s, to){
+    if (!segReady(s)) await loadSeg(s);
+    return new Promise(res => {
+      const t0 = performance.now(); let shown = false;
+      const tick = now => {
+        const t = Math.min(1,(now-t0)/PLAY_MS), e = easeIO(t);
+        show(s, Math.round(e*(N-1)));
+        prog.style.width = ((s + e)/LAST*100) + "%";
+        if (!shown && t > .62){ shown = true; setStageUI(to); panelIn(to); }
+        t < 1 ? requestAnimationFrame(tick) : res();
+      };
+      requestAnimationFrame(tick);
+    });
+  }
+
+  function lidsTo(v, ms, ease){
+    return Promise.all([...lids].map(l => l.animate([{transform:getComputedStyle(l).transform},{transform:`scaleY(${v})`}],{duration:ms,easing:ease,fill:"forwards"}).finished));
+  }
+  async function blinkTo(st){
+    stage.classList.add("blinking");
+    await lidsTo(1, 240, "cubic-bezier(.7,0,.84,0)");
+    const f = restFrame(st); show(f.s, f.i);
+    setStageUI(st);
+    await sleep(70);
+    lidsTo(0, 420, "cubic-bezier(.16,1,.3,1)");
+    stage.classList.remove("blinking");
+    await sleep(120); panelIn(st);
+    await sleep(380);
+  }
+
+  async function goTo(st){
+    st = Math.max(0, Math.min(LAST, st));
+    if (busy || st === current) return;
+    setBusy(true);
+    const from = current; current = st;
+    panelOut(from);
+    if (st === from + 1 && st <= 4){
+      await playSeg(from, st);
+    } else if (st === from + 1){ // to contact: no frames, just a soft cross
+      await sleep(350); setStageUI(st); panelIn(st); await sleep(500);
+    } else {
+      await sleep(140); await blinkTo(st);
+    }
+    coolUntil = performance.now() + 650;
+    setBusy(false);
+  }
+
+  /* ---- input ---- */
+  let acc = 0, accT = 0;
+  addEventListener("wheel", e => {
+    e.preventDefault();
+    if (document.body.classList.contains("menu-open")) return;
+    const now = performance.now();
+    if (busy || now < coolUntil){ acc = 0; return; }
+    if (now - accT > 220) acc = 0;
+    accT = now; acc += e.deltaY;
+    if (Math.abs(acc) > 40){ const d = Math.sign(acc); acc = 0; goTo(current + d); }
+  }, {passive:false});
+
+  let ty = null;
+  addEventListener("touchstart", e => { ty = e.touches[0].clientY; }, {passive:true});
+  addEventListener("touchend", e => {
+    if (ty === null) return;
+    const dy = ty - e.changedTouches[0].clientY; ty = null;
+    if (e.target.closest("input,select,button,a")) return;
+    if (Math.abs(dy) > 45) goTo(current + Math.sign(dy));
+  }, {passive:true});
+
+  addEventListener("keydown", e => {
+    if (e.target.closest("input,select")) return;
+    if (["ArrowDown","PageDown"," "].includes(e.key)){ e.preventDefault(); goTo(current+1); }
+    if (["ArrowUp","PageUp"].includes(e.key)){ e.preventDefault(); goTo(current-1); }
+    if (e.key === "Home") goTo(0);
+    if (e.key === "End") goTo(LAST);
+    if (e.key === "Escape") toggleMenu(false);
+  });
+
+  /* ---- nav ---- */
+  const rail = document.getElementById("rail"), menuNav = document.getElementById("menuNav");
+  STAGES.forEach((name,k) => {
+    rail.insertAdjacentHTML("beforeend", `<button data-stage-btn="${k}" data-go="${k}" class="${k===0?'on':''}"><span class="num">0${k+1}</span><span class="tick"></span><span class="lbl">${name}</span></button>`);
+    menuNav.insertAdjacentHTML("beforeend", `<button data-stage-btn="${k}" data-go="${k}" class="${k===0?'on':''}"><small>0${k+1}</small>${name}</button>`);
+  });
+  const burger = document.getElementById("burger"), menu = document.getElementById("menu");
+  function toggleMenu(force){
+    const open = force ?? !document.body.classList.contains("menu-open");
+    document.body.classList.toggle("menu-open", open);
+    burger.setAttribute("aria-expanded", open); menu.setAttribute("aria-hidden", !open);
+  }
+  burger.addEventListener("click", () => toggleMenu());
+  document.addEventListener("click", e => {
+    const b = e.target.closest("[data-go]"); if (!b) return;
+    e.preventDefault();
+    const wasOpen = document.body.classList.contains("menu-open");
+    toggleMenu(false);
+    setTimeout(() => goTo(+b.dataset.go), wasOpen ? 450 : 0);
+  });
+
+  document.getElementById("lead").addEventListener("submit", e => {
+    e.preventDefault();
+    const f = e.target, nm = f.elements["name"], ph = f.elements["phone"];
+    if (!nm.value.trim() || !ph.value.trim()){ (nm.value.trim() ? ph : nm).focus(); return; }
+    f.classList.add("sent");
+  });
+
+  /* ---- boot ---- */
+  addEventListener("resize", resize);
+  resize();
+  hero.onload = paint;
+  const line = document.getElementById("loadLine"), pct = document.getElementById("loadPct");
+  (async () => {
+    // stage rest frames first so menu jumps are instant
+    await Promise.all([load(0,0), load(0,N-1), load(1,N-1), load(2,N-1), load(3,N-1)]);
+    await loadSeg(0, p => { line.style.width = p*100+"%"; pct.textContent = Math.round(p*100)+"%"; });
+    paint();
+    document.getElementById("loader").classList.add("done");
+    for (let s=1; s<SEGS.length; s++) await loadSeg(s);
+  })();
+})();
+</script>
+</body>
+</html>
