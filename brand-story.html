@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>סטורי מותג שפרבר</title>
+<style>
+@font-face{font-family:"Days";src:url(fonts/Days-Regular.woff2) format("woff2");font-weight:400}
+@font-face{font-family:"Days";src:url(fonts/Days-Bold.woff2) format("woff2");font-weight:700}
+@font-face{font-family:"Polin";src:url(fonts/Polin-Regular.woff2) format("woff2");font-weight:400}
+:root{--pink:#F49CC4;--navy:#12475C;--navy2:#1C5A73;--yellow:#D6CC3A;--orange:#D3833A;--ink:#08202C;--ink2:#0F2E3D;--paper:#F7F3EC}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--ink)}
+.story{position:relative;width:1080px;height:1920px;overflow:hidden;color:var(--paper);font-family:"Polin",sans-serif;
+  background:radial-gradient(90% 60% at 80% 0%,#12384a 0%,rgba(18,56,74,0) 60%),var(--ink)}
+.ring{position:absolute;border-radius:50%;border:2px solid rgba(244,156,196,.14);width:820px;height:820px;left:-430px;top:-260px}
+
+/* header */
+header{position:absolute;top:196px;right:64px;left:64px;display:flex;align-items:center;justify-content:space-between}
+header img{height:168px;width:auto}
+.name{text-align:left}
+.name h1{font-family:"Days";font-weight:700;font-size:92px;line-height:.95}
+.name h1 em{font-style:normal;color:var(--yellow)}
+.name p{font-family:"Days";font-size:28px;letter-spacing:.08em;color:var(--pink);margin-top:12px}
+
+/* shapes + colors */
+.palette{position:absolute;top:446px;right:64px;left:64px;display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.sw{height:150px;border-radius:24px 0;position:relative;overflow:hidden;padding:14px 16px;display:flex;flex-direction:column;justify-content:flex-end}
+.sw b{font-family:"Days";font-size:19px;letter-spacing:.05em;direction:ltr;text-align:right;position:relative}
+.sw svg{position:absolute;top:16px;left:16px;width:64px;height:64px}
+
+/* mockups */
+.mocks{position:absolute;top:614px;right:64px;left:64px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.tile{position:relative;overflow:hidden;border-radius:30px 0;background:#000;height:344px;box-shadow:0 18px 40px -18px rgba(0,0,0,.7)}
+.tile.hero{grid-column:1/-1;height:404px}
+.scene{position:absolute;left:0;top:0;transform-origin:0 0}
+.scene > img{display:block}
+.print{position:absolute;left:0;top:0;transform-origin:0 0;mix-blend-mode:multiply}
+.print.light{mix-blend-mode:normal;opacity:.93}
+.tile .cap{position:absolute;bottom:14px;right:16px;font-family:"Days";font-size:18px;letter-spacing:.06em;color:var(--paper);background:rgba(8,32,44,.62);backdrop-filter:blur(6px);padding:6px 14px;border-radius:12px 0;z-index:3}
+.tile::after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);border-radius:inherit;pointer-events:none}
+
+footer{position:absolute;top:1760px;right:64px;left:64px;display:flex;align-items:center;justify-content:space-between}
+footer span{font-family:"Days";font-size:24px;letter-spacing:.12em;color:rgba(247,243,236,.6)}
+footer i{display:block;width:220px;height:14px;background:linear-gradient(270deg,var(--orange) 0 34%,var(--yellow) 34%)}
+
+/* ---- print artwork (designed at the surface's own size) ---- */
+.art{position:relative;width:100%;height:100%;overflow:hidden;direction:rtl}
+/* fence banner 1300x690 */
+.banner{background:var(--ink);color:var(--paper)}
+.banner .c{position:absolute;width:640px;height:640px;border-radius:50%;background:var(--pink);left:-170px;top:120px}
+.banner .t{position:absolute;left:300px;top:40px;width:250px;height:280px;background:var(--navy2);clip-path:polygon(0 0,100% 50%,0 100%)}
+.banner .b{position:absolute;left:90px;top:470px;width:560px;height:84px;background:var(--yellow)}
+.banner .o{position:absolute;left:90px;top:470px;width:380px;height:84px;background:var(--orange);clip-path:circle(320px at 60px -30px)}
+.banner .txt{position:absolute;right:70px;top:90px;width:560px;text-align:right}
+.banner .txt img{height:150px;width:auto;margin-bottom:36px}
+.banner h2{font-family:"Days";font-weight:700;font-size:92px;line-height:.98}
+.banner h2 em{font-style:normal;color:var(--yellow)}
+.banner p{font-family:"Days";font-size:30px;letter-spacing:.06em;margin-top:26px;color:var(--pink)}
+/* project sign 934x684 */
+.board{background:#fff;color:var(--ink)}
+.board .top{background:var(--ink);height:250px;display:flex;align-items:center;justify-content:space-between;padding:0 54px}
+.board .top img{height:180px;width:auto}
+.board .top b{font-family:"Days";font-size:40px;color:var(--paper);letter-spacing:.04em}
+.board .mid{padding:44px 54px 0}
+.board .mid h3{font-family:"Days";font-weight:700;font-size:78px;line-height:1}
+.board .mid h3 em{font-style:normal;color:var(--navy)}
+.board .mid p{font-family:"Days";font-size:30px;margin-top:20px;color:#41606d}
+.board .foot{position:absolute;left:0;right:0;bottom:0;height:46px;background:linear-gradient(270deg,var(--orange) 0 30%,var(--yellow) 30%)}
+.board .dot{position:absolute;left:54px;top:300px;width:150px;height:150px;border-radius:50%;background:var(--pink)}
+/* cards 830x500 */
+.card-a{background:var(--ink);display:grid;place-items:center}
+.card-a img{height:300px;width:auto}
+.card-b{background:#fff;color:var(--ink);padding:58px 64px}
+.card-b b{font-family:"Days";font-weight:700;font-size:58px;display:block}
+.card-b span{font-family:"Days";font-size:30px;color:#41606d;display:block;margin-top:8px}
+.card-b .ct{position:absolute;left:64px;bottom:96px;font-family:"Days";font-size:28px;line-height:1.5;direction:ltr;text-align:left;color:var(--ink)}
+.card-b img{position:absolute;right:64px;bottom:70px;height:150px;width:auto}
+.card-b .bar{position:absolute;left:0;right:0;bottom:0;height:34px;background:linear-gradient(270deg,var(--orange) 0 30%,var(--yellow) 30%)}
+/* notebook cover 1000x1480 */
+.cover{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:60px}
+.cover img{width:520px;height:auto}
+.cover i{display:block;width:420px;height:26px;background:linear-gradient(270deg,var(--orange) 0 34%,var(--yellow) 34%)}
+/* tote print 600x700 */
+.tote{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px}
+.tote img{width:470px;height:auto}
+.tote p{font-family:"Days";font-size:44px;color:var(--ink);letter-spacing:.04em}
+</style>
+</head>
+<body>
+<div class="story">
+  <div class="ring"></div>
+
+  <header>
+    <img src="brand/logo-light.png" alt="שפרבר">
+    <div class="name">
+      <h1>שפרבר<br><em>בנייה</em></h1>
+      <p>מהקרקע ועד המפתח</p>
+    </div>
+  </header>
+
+  <section class="palette">
+    <div class="sw" style="background:#F49CC4;color:#08202C"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#fff" opacity=".35"/></svg><b>#F49CC4</b></div>
+    <div class="sw" style="background:#12475C"><svg viewBox="0 0 64 64"><polygon points="8,2 62,32 8,62" fill="#fff" opacity=".22"/></svg><b>#12475C</b></div>
+    <div class="sw" style="background:#D6CC3A;color:#08202C"><svg viewBox="0 0 64 64"><rect x="0" y="22" width="64" height="20" fill="#fff" opacity=".35"/></svg><b>#D6CC3A</b></div>
+    <div class="sw" style="background:#D3833A;color:#08202C"><svg viewBox="0 0 64 64"><circle cx="24" cy="32" r="22" fill="#fff" opacity=".25"/><rect x="16" y="26" width="48" height="13" fill="#fff" opacity=".3"/></svg><b>#D3833A</b></div>
+    <div class="sw" style="background:#F7F3EC;color:#08202C"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="28" fill="none" stroke="#08202C" stroke-opacity=".2" stroke-width="3"/></svg><b>#F7F3EC</b></div>
+  </section>
+
+  <section class="mocks">
+    <div class="tile hero" data-img="mockups/fence.jpg" data-iw="2752" data-ih="1536" data-focus="1328,800,2050" >
+      <div class="print" data-w="1300" data-h="690" data-q="677,477 1978,482 1976,1165 680,1168">
+        <div class="art banner"><span class="c"></span><span class="t"></span><span class="b"></span><span class="o"></span>
+          <div class="txt"><img src="brand/logo-light.png" alt=""><h2>כאן נבנה<br><em>הבית הבא שלכם</em></h2><p>יזמות וביצוע · שפרבר בנייה</p></div></div>
+      </div>
+      <span class="cap">גדר אתר</span>
+    </div>
+
+    <div class="tile" data-img="mockups/sign.jpg" data-iw="1856" data-ih="2304" data-focus="935,990,1380">
+      <div class="print" data-w="934" data-h="684" data-q="468,612 1401,612 1402,1296 468,1296">
+        <div class="art board"><div class="top"><img src="brand/logo-light.png" alt=""><b>יזם ומבצע</b></div><span class="dot"></span>
+          <div class="mid"><h3>פרויקט<br><em>מגורים חדש</em></h3><p>תכנון, ביצוע ומסירה: שפרבר בנייה</p></div><span class="foot"></span></div>
+      </div>
+      <span class="cap">שלט פרויקט</span>
+    </div>
+
+    <div class="tile" data-img="mockups/cards.jpg" data-iw="1856" data-ih="2304" data-focus="900,1160,1450">
+      <div class="print" data-w="830" data-h="500" data-q="225,715 1029,525 1137,1011 332,1203">
+        <div class="art card-a"><img src="brand/logo-light.png" alt=""></div>
+      </div>
+      <div class="print" data-w="830" data-h="500" data-q="326,1303 1122,1108 1235,1598 434,1798">
+        <div class="art card-b"><b>שם מלא</b><span>מנהל/ת פרויקטים</span><div class="ct">+972 00 000 0000<br>name@company.co.il</div><img src="brand/logo-dark.png" alt=""><span class="bar"></span></div>
+      </div>
+      <span class="cap">כרטיסי ביקור</span>
+    </div>
+
+    <div class="tile" data-img="mockups/note.jpg" data-iw="1856" data-ih="2304" data-focus="830,1220,1240">
+      <div class="print light" data-w="1000" data-h="1480" data-q="345,461 1334,458 1348,1939 350,1945">
+        <div class="art cover"><img src="brand/logo-light.png" alt=""><i></i></div>
+      </div>
+      <span class="cap">מחברת</span>
+    </div>
+
+    <div class="tile" data-img="mockups/tote.jpg" data-iw="1856" data-ih="2304" data-focus="928,1520,1260">
+      <div class="print" data-w="600" data-h="700" data-q="668,1300 1188,1300 1192,1906 664,1906">
+        <div class="art tote"><img src="brand/logo-dark.png" alt=""><p>מהקרקע ועד המפתח</p></div>
+      </div>
+      <span class="cap">תיק בד</span>
+    </div>
+  </section>
+
+  <footer><span>ספר מותג · 2026</span><i></i></footer>
+</div>
+
+<script>
+/* homography: map a w×h box onto quad (TL,TR,BR,BL) -> CSS matrix3d */
+function solve(A, b){
+  const n = b.length;
+  for (let i=0;i<n;i++){
+    let p = i; for (let r=i+1;r<n;r++) if (Math.abs(A[r][i]) > Math.abs(A[p][i])) p = r;
+    [A[i],A[p]] = [A[p],A[i]]; [b[i],b[p]] = [b[p],b[i]];
+    for (let r=i+1;r<n;r++){ const f = A[r][i]/A[i][i]; for (let c=i;c<n;c++) A[r][c] -= f*A[i][c]; b[r] -= f*b[i]; }
+  }
+  const x = new Array(n);
+  for (let i=n-1;i>=0;i--){ let s = b[i]; for (let c=i+1;c<n;c++) s -= A[i][c]*x[c]; x[i] = s/A[i][i]; }
+  return x;
+}
+function matrix3d(w, h, q){
+  const src = [[0,0],[w,0],[w,h],[0,h]], A = [], b = [];
+  for (let i=0;i<4;i++){
+    const [x,y] = src[i], [X,Y] = q[i];
+    A.push([x,y,1,0,0,0,-x*X,-y*X]); b.push(X);
+    A.push([0,0,0,x,y,1,-x*Y,-y*Y]); b.push(Y);
+  }
+  const [a,bb,c,d,e,f,g,hh] = solve(A,b);
+  return `matrix3d(${a},${d},0,${g},${bb},${e},0,${hh},0,0,1,0,${c},${f},0,1)`;
+}
+document.querySelectorAll(".tile").forEach(tile => {
+  const iw = +tile.dataset.iw, ih = +tile.dataset.ih;
+  const [fx, fy, fw] = tile.dataset.focus.split(",").map(Number);
+  const TW = tile.clientWidth, TH = tile.clientHeight;
+  const s = Math.max(TW / fw, TH / ih * 0);  // scale by focus width
+  const scale = Math.max(TW / fw, TH / (fw * TH / TW));
+  const scene = document.createElement("div"); scene.className = "scene";
+  scene.style.width = iw + "px"; scene.style.height = ih + "px";
+  const im = document.createElement("img"); im.src = tile.dataset.img; im.width = iw; im.height = ih;
+  scene.appendChild(im);
+  tile.querySelectorAll(".print").forEach(p => {
+    const w = +p.dataset.w, h = +p.dataset.h;
+    const q = p.dataset.q.split(" ").map(pt => pt.split(",").map(Number));
+    p.style.width = w + "px"; p.style.height = h + "px";
+    p.style.transform = matrix3d(w, h, q);
+    scene.appendChild(p);
+  });
+  // isolate so multiply blends with the photo only
+  scene.style.isolation = "isolate";
+  const sc = TW / fw;
+  let ox = TW/2 - fx*sc, oy = TH/2 - fy*sc;
+  ox = Math.min(0, Math.max(TW - iw*sc, ox)); oy = Math.min(0, Math.max(TH - ih*sc, oy));
+  scene.style.transform = `translate(${ox}px,${oy}px) scale(${sc})`;
+  tile.prepend(scene);
+});
+</script>
+</body>
+</html>
