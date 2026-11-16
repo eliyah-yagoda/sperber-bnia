@@ -6,7 +6,10 @@
 <title>שפרבר בנייה | מהקרקע ועד המפתח</title>
 <meta name="description" content="שפרבר בנייה — יזמות, תכנון וביצוע פרויקטים למגורים. מהמגרש הריק ועד מסירת המפתח.">
 <link rel="icon" href="img/logo.png">
-<link rel="preload" href="img/hero.webp" as="image">
+<link rel="preload" href="img/hero-p.webp" as="image" media="(orientation: portrait)" fetchpriority="high">
+<link rel="preload" href="img/hero-md.webp" as="image" media="(orientation: landscape)" fetchpriority="high">
+<link rel="preload" href="fonts/Days-Bold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/Polin-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <style>
 @font-face{font-family:"Days";src:url(fonts/Days-Regular.woff2) format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"Days";src:url(fonts/Days-Bold.woff2) format("woff2");font-weight:700;font-display:swap}
@@ -132,6 +135,8 @@ body.busy .cue,body.end .cue{opacity:0}
 /* progress */
 .progress{position:fixed;left:0;right:0;bottom:0;height:3px;z-index:21;background:rgba(247,243,236,.08)}
 .progress i{position:absolute;right:0;top:0;bottom:0;width:0;background:var(--yellow);transition:width .6s var(--ease-out)}
+body.waiting .progress i{animation:waitpulse 1s ease-in-out infinite}
+@keyframes waitpulse{50%{opacity:.35}}
 .progress i::before{content:"";position:absolute;right:0;top:0;bottom:0;width:22%;background:var(--pink)}
 
 /* decorative logo shapes */
@@ -318,11 +323,28 @@ body.menu-open .menu nav button{opacity:1;transform:none}
 
 <script>
 (() => {
-  const SEGS = ["2","3","4","5"], N = 145, PLAY_MS = 3400;
+  const SEGS = ["2","3","4","5"], PLAY_MS = 3400;
   const STAGES = ["הקרקע","תכנון","הדמיה","שלד","מסירה","צור קשר"];
   const LAST = STAGES.length - 1;
-  const pad = n => String(n).padStart(3,"0");
-  const src = (s,i) => `frames/${SEGS[s]}/${pad(i+1)}.webp`;
+
+  /* ---- pick the lightest frame set that still looks sharp on this screen ----
+     p  : portrait crop 540x960, every 2nd frame  (phones)          ~11MB story
+     sm : 800px, every 2nd frame (slow connection / small screens)  ~11MB
+     md : 1280px, every 2nd frame (default desktop)                 ~22MB
+     lg : 1600px, all frames (big screens on fast connections)      ~71MB      */
+  const conn = navigator.connection || {};
+  const DPR = Math.min(window.devicePixelRatio || 1, 2);
+  const slow = !!conn.saveData || /2g|3g/.test(conn.effectiveType || "") || (conn.downlink && conn.downlink < 2);
+  const fast = conn.effectiveType === "4g" && (!conn.downlink || conn.downlink >= 10);
+  const SET = (() => {
+    if (innerHeight > innerWidth) return { dir:"f/p",  n:73,  pad:2, hero:"img/hero-p.webp",  fx:.5 };
+    const px = innerWidth * DPR;
+    if (slow || px < 1000)        return { dir:"f/sm", n:73,  pad:2, hero:"img/hero-md.webp", fx:.5 };
+    if (fast && px >= 2200)       return { dir:"frames", n:145, pad:3, hero:"img/hero.webp", fx:.5 };
+    return                               { dir:"f/md", n:73,  pad:2, hero:"img/hero-md.webp", fx:.5 };
+  })();
+  const N = SET.n;
+  const src = (s,i) => `${SET.dir}/${SEGS[s]}/${String(i+1).padStart(SET.pad,"0")}.webp`;
 
   const stage = document.getElementById("stage");
   const canvas = document.getElementById("seq"), ctx = canvas.getContext("2d");
@@ -332,25 +354,42 @@ body.menu-open .menu nav button{opacity:1;transform:none}
 
   /* ---- frames ---- */
   const imgs = SEGS.map(() => new Array(N));
-  const loaded = SEGS.map(() => new Uint8Array(N));
-  const segCount = SEGS.map(() => 0);
-  const hero = new Image(); hero.src = "img/hero.webp";
-  let cur = { s:0, i:0 };
+  const loaded = SEGS.map(() => new Uint8Array(N));   // 1 = decoded and ready
+  const asked = SEGS.map(() => new Uint8Array(N));    // 1 = requested
+  const hero = new Image(); hero.decoding = "async"; hero.src = SET.hero;
+  let cur = { s:0, f:0 };
+  let current = 0;                                    // stage index (declared early: the loader uses it)
 
-  function load(s,i){
-    return new Promise(res => {
-      if (loaded[s][i]) return res();
-      const im = new Image(); im.decoding = "async"; im.src = src(s,i);
-      im.onload = () => { imgs[s][i] = im; loaded[s][i] = 1; segCount[s]++; res(); };
-      im.onerror = res;
-    });
+  /* Progressive, coarse-to-fine loading: every 8th frame of every segment first (the whole
+     story becomes playable after ~1/8 of the bytes), then every 4th, 2nd, all. The segment the
+     visitor is about to see always goes first. Frames in between are crossfaded while missing. */
+  const LEVELS = [8, 4, 2, 1];
+  const inLevel = (i, step) => i % step === 0 || (step === 8 && i === N-1);
+  const waiters = [];
+  const notify = () => { for (let k = waiters.length-1; k >= 0; k--) if (waiters[k].test()){ waiters[k].res(); waiters.splice(k,1); } };
+  const until = test => test() ? Promise.resolve() : new Promise(res => waiters.push({ test, res }));
+  const levelReady = (s, step) => { for (let i = 0; i < N; i++) if (inLevel(i, step) && !loaded[s][i]) return false; return true; };
+  const playable = s => levelReady(s, 8);
+
+  function nextJob(){
+    // the stage rest frames come first so menu jumps and back-blinks are instant
+    const rest = [[0,0],[0,N-1],[1,N-1],[2,N-1],[3,N-1]];
+    for (const [s,i] of rest) if (!asked[s][i]) return [s,i];
+    const order = [0,1,2,3].map(k => (Math.min(current,3) + k) % 4);
+    for (const step of LEVELS)
+      for (const s of order)
+        for (let i = 0; i < N; i++) if (inLevel(i, step) && !asked[s][i]) return [s,i];
+    return null;
   }
-  async function loadSeg(s, onp){
-    let next = 0, done = 0;
-    const worker = async () => { while (next < N){ const i = next++; await load(s,i); done++; onp && onp(done/N); } };
-    await Promise.all(Array.from({length:8}, worker));
+  function pump(){
+    const job = nextJob(); if (!job) return false;
+    const [s,i] = job; asked[s][i] = 1;
+    const im = new Image(); im.decoding = "async"; im.src = src(s,i);
+    const done = ok => { if (ok){ imgs[s][i] = im; loaded[s][i] = 1; if (s === cur.s) paint(); } notify(); pump(); };
+    (im.decode ? im.decode() : new Promise((r,j) => { im.onload = r; im.onerror = j; })).then(() => done(true), () => done(false));
+    return true;
   }
-  const segReady = s => segCount[s] >= N - 2;
+  function startLoading(){ const lanes = slow ? 3 : 6; for (let k = 0; k < lanes; k++) if (!pump()) break; }
 
   /* ---- drawing ---- */
   let W=0,H=0;
@@ -362,24 +401,34 @@ body.menu-open .menu nav button{opacity:1;transform:none}
     ctx.imageSmoothingQuality = "high";
     paint();
   }
-  function nearest(s,i){
-    if (loaded[s][i]) return imgs[s][i];
-    for (let d=1; d<N; d++){ if (i-d>=0 && loaded[s][i-d]) return imgs[s][i-d]; if (i+d<N && loaded[s][i+d]) return imgs[s][i+d]; }
-    return null;
-  }
-  function drawImg(im){
-    if (!im || !im.naturalWidth) return;
+  function drawImg(im, alpha = 1){
+    if (!im || !im.naturalWidth) return false;
     const iw = im.naturalWidth, ih = im.naturalHeight;
     const sc = Math.max(W/iw, H/ih), dw = iw*sc, dh = ih*sc;
-    const fx = W < H ? .6 : .5; // portrait: keep building in frame
+    // wide frames on a portrait screen: keep the building in view
+    const fx = (W < H && iw > ih) ? .6 : SET.fx;
+    ctx.globalAlpha = alpha;
     ctx.drawImage(im, (W-dw)*fx, (H-dh)/2, dw, dh);
+    ctx.globalAlpha = 1;
+    return true;
   }
-  function paint(){ drawImg(nearest(cur.s,cur.i) || hero); }
-  function show(s,i){ cur = {s,i}; paint(); }
+  // draw fractional frame f: blend the nearest loaded frames on either side
+  function paint(){
+    const { s, f } = cur, L = loaded[s];
+    const i0 = Math.floor(f);
+    let a = -1, b = -1;
+    for (let i = Math.min(i0, N-1); i >= 0; i--) if (L[i]){ a = i; break; }
+    for (let i = Math.max(Math.ceil(f), 0); i < N; i++) if (L[i]){ b = i; break; }
+    if (a < 0 && b < 0){ drawImg(hero); return; }
+    if (a < 0 || b < 0 || a === b){ drawImg(imgs[s][a >= 0 ? a : b]); return; }
+    drawImg(imgs[s][a]);
+    drawImg(imgs[s][b], (f - a) / (b - a));
+  }
+  function show(s,f){ cur = { s, f }; paint(); }
   const restFrame = st => st <= 0 ? {s:0,i:0} : {s:Math.min(st,4)-1, i:N-1};
 
   /* ---- state ---- */
-  let current = 0, busy = false, coolUntil = 0;
+  let busy = false, coolUntil = 0;
   const setBusy = b => { busy = b; document.body.classList.toggle("busy", b); };
   const sleep = ms => new Promise(r => setTimeout(r, ms));
 
@@ -397,12 +446,16 @@ body.menu-open .menu nav button{opacity:1;transform:none}
   const easeIO = t => t<.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2;
 
   async function playSeg(s, to){
-    if (!segReady(s)) await loadSeg(s);
+    if (!playable(s)){
+      document.body.classList.add("waiting");
+      await until(() => playable(s));
+      document.body.classList.remove("waiting");
+    }
     return new Promise(res => {
       const t0 = performance.now(); let shown = false;
       const tick = now => {
         const t = Math.min(1,(now-t0)/PLAY_MS), e = easeIO(t);
-        show(s, Math.round(e*(N-1)));
+        show(s, e*(N-1));
         prog.style.width = ((s + e)/LAST*100) + "%";
         if (!shown && t > .62){ shown = true; setStageUI(to); panelIn(to); }
         t < 1 ? requestAnimationFrame(tick) : res();
@@ -505,15 +558,14 @@ body.menu-open .menu nav button{opacity:1;transform:none}
   addEventListener("resize", resize);
   resize();
   hero.onload = paint;
+  // open as soon as the first picture is in (or after 2.5s at most), then stream the rest
+  const loader = document.getElementById("loader");
   const line = document.getElementById("loadLine"), pct = document.getElementById("loadPct");
-  (async () => {
-    // stage rest frames first so menu jumps are instant
-    await Promise.all([load(0,0), load(0,N-1), load(1,N-1), load(2,N-1), load(3,N-1)]);
-    await loadSeg(0, p => { line.style.width = p*100+"%"; pct.textContent = Math.round(p*100)+"%"; });
-    paint();
-    document.getElementById("loader").classList.add("done");
-    for (let s=1; s<SEGS.length; s++) await loadSeg(s);
-  })();
+  line.style.width = "100%"; pct.textContent = "";
+  const open = () => { paint(); loader.classList.add("done"); };
+  const heroIn = hero.decode ? hero.decode() : new Promise(r => { hero.onload = r; });
+  Promise.race([heroIn.catch(() => {}), sleep(2500)]).then(open);
+  startLoading();
 })();
 </script>
 </body>
